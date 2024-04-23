@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
 from skimage import io
 from imageio import imread
@@ -9,7 +10,16 @@ from PIL import Image
 from RMBG.utilities import preprocess_image, postprocess_image
 from RMBG.briarmbg import BriaRMBG
 
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/remove-bg/")
 async def remove_background(file: UploadFile = File(...)):

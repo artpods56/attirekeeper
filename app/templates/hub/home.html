@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'hub/css/styles.css' %}" />
+  </head>
+
+  <body>
+    <div id="upload_box">
+      <div id="drop_zone">Drag files here</div>
+      <input type="file" id="file_input" multiple style="display: none" />
+
+      <input
+        type="text"
+        id="name_input"
+        class="input_field"
+        placeholder="Name"
+      />
+      <input
+        type="text"
+        id="description_input"
+        class="input_field"
+        placeholder="Description"
+      />
+
+      <div id="images_preview", class="images_container"></div>
+      <button id="submit_btn">Remove Background</button>
+      <div id="results_preview", class="images_container"></div>
+      <script src="{% static 'hub/js/main.js' %}"></script>
+    </div>
+  </body>
+</html>
