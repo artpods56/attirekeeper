@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: fastapi-application
+    ports:
+      - "8000:8000"
+    volumes:
+      - type: bind
+        source: ./api
+        target: /code
+
+    environment:
+      - DEBUG=1
+      - WATCHFILES_FORCE_POLLING=true
+
+    restart: always
+  app:
+    build: app
+    ports: 8001:8001
+    volumes:
+      - type: bind
+        source: ./app
+        target: /code
+    environment:
+      - DEBUG=1
+      - WATCHFILES_FORCE_POLLING=true
+    restart: always
+
+    
