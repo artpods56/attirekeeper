@@ -1,5 +1,8 @@
-version: '3.8'
+version: "3.8"
 
+networks:
+  backend:
+    driver: bridge
 services:
   api:
     build:
@@ -18,9 +21,15 @@ services:
       - WATCHFILES_FORCE_POLLING=true
 
     restart: always
+    networks:
+      - backend
+
   app:
-    build: app
-    ports: 
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: django-application
+    ports:
       - 8001:8001
     volumes:
       - type: bind
@@ -30,5 +39,39 @@ services:
       - DEBUG=1
       - WATCHFILES_FORCE_POLLING=true
     restart: always
+    networks:
+      - backend
+    depends_on:
+      - postgres
 
-    
+  postgres:
+    image: postgres:latest
+    container_name: postgres-database
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - type: bind
+        source: ./postgres
+        target: /var/lib/postgresql/data
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    ports:
+      - 5050:80 # Expose pgAdmin on port 5050 of the host
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_LISTEN_PORT: 80
+    depends_on:
+      - postgres # Ensures pgAdmin starts after PostgreSQL
+    restart: always
+    networks:
+      - backend

@@ -7,26 +7,34 @@
 
   <body>
     <div id="upload_box">
-      <div id="drop_zone">Drag files here</div>
-      <input type="file" id="file_input" multiple style="display: none" />
+      <!-- Navigation tabs -->
+      <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Upload')">
+          Upload
+        </button>
+        <button class="tablinks" onclick="openTab(event, 'Preview')">
+          Preview
+        </button>
+        <button class="tablinks" onclick="openTab(event, 'Results')">
+          Results
+        </button>
+      </div>
 
-      <input
-        type="text"
-        id="name_input"
-        class="input_field"
-        placeholder="Name"
-      />
-      <input
-        type="text"
-        id="description_input"
-        class="input_field"
-        placeholder="Description"
-      />
+      <!-- Tab content for Upload -->
+      <div id="Upload" class="tabcontent">
+        <div id="drop_zone">Drag files here</div>
+        <input type="file" id="file_input" multiple style="display: none" />
+        <button id="submit_btn">Remove Background</button>
+      </div>
+      <div id="Preview" class="tabcontent">
+        <div id="images_preview" class="images_container"></div>
+      </div>
 
-      <div id="images_preview", class="images_container"></div>
-      <button id="submit_btn">Remove Background</button>
-      <div id="results_preview", class="images_container"></div>
-      <script src="{% static 'hub/js/main.js' %}"></script>
+      <!-- Tab content for Results -->
+      <div id="Results" class="tabcontent">
+        <div id="results_preview" class="images_container"></div>
+      </div>
     </div>
+    <script src="{% static 'hub/js/main.js' %}"></script>
   </body>
 </html>
