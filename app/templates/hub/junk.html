@@ -1,0 +1,97 @@
+<div id="Upload" class="tabcontent">
+    <div id="drop_zone">Drag files here</div>
+    
+    <button id="submit_btn">Remove Background</button>
+  </div>
+  <div id="Preview" class="tabcontent">
+    <div id="images_preview" class="images_container"></div>
+  </div>
+
+
+  
+const fileInput = document.createElement('input');
+
+fileInput.setAttribute('type', 'file');
+fileInput.setAttribute('multiple', '');
+fileInput.style.display = 'none';
+
+
+const dropZone = document.getElementById('drop_zone');
+const buttonInput = document.getElementById('file_input');
+
+
+dropZone.appendChild(fileInput);
+buttonInput.appendChild(fileInput);
+
+buttonInput.addEventListener('click', () => fileInput.click());
+
+dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drop-zone--over');
+});
+
+dropZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drop-zone--over');
+});
+
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drop-zone--over');
+    const files = e.dataTransfer.files;
+    handleFiles(files);
+});
+
+fileInput.addEventListener('change', (e) => {
+    const files = e.target.files;
+    handleFiles(files);
+});
+
+function handleFiles(files) {
+    for (let i = 0; i < files.length; i++) {
+        // Implement file processing or uploading here
+        console.log('File uploaded:', files[i]);
+    }
+    // Clear the file input value
+    fileInput.value = '';
+}
+
+
+function displayImage(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-container';
+        const img = document.createElement('img');
+        img.src = e.target.result;
+
+        imageContainer.appendChild(img);
+        imagesPreview.appendChild(imageContainer);
+
+        imageContainer.addEventListener('click', () => {
+            imageContainer.classList.toggle('selected');
+        });
+    };
+    reader.readAsDataURL(file);
+}
+
+function updateThumbnails() {
+    const thumbnailsContainer = document.getElementById("thumbnails");
+    if (!thumbnailsContainer) {
+      const grid = document.createElement("div");
+      grid.id = "thumbnails";
+      grid.style.display = "grid";
+      grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(220px, 1fr))";
+      grid.style.gridAutoRows = "1fr";
+      grid.style.alignItems = "stretch";
+  
+  
+      grid.style.gap = "10px";
+      grid.style.justifyItems = "center";
+      grid.style.alignItems = "center";
+      dropZone.appendChild(grid);
+      return grid;
+    }
+  
+    return thumbnailsContainer;
+  }

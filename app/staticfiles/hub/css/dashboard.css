@@ -1,0 +1,96 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fa;
+  margin: 0;
+  padding: 20px;
+}
+.header {
+  background: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.search-box {
+  display: flex;
+  align-items: center;
+}
+.search-box input {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.assets-list {
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  text-align: left;
+  padding: 12px 10px;
+}
+th {
+  background-color: #f9f9f9;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.status {
+  border-radius: 10px;
+  color: white;
+  padding: 3px 10px;
+  text-align: center;
+}
+.repair {
+  background-color: #f44336;
+}
+.active {
+  background-color: #4caf50;
+}
+.order {
+  background-color: #ff9800;
+}
+.purchase {
+  background-color: #2196f3;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.pagination button {
+  padding: 8px 16px;
+  margin: 0 4px;
+  border: none;
+  border-radius: 4px;
+  background-color: #ddd;
+}
+.pagination button:hover {
+  background-color: #ccc;
+}
+
+.nav-button {
+  background-color: #80ccff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #45a049;
+}

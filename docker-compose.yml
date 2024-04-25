@@ -38,6 +38,10 @@ services:
     environment:
       - DEBUG=1
       - WATCHFILES_FORCE_POLLING=true
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@domain.com
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SETTINGS_MODULE=app.settings
     restart: always
     networks:
       - backend

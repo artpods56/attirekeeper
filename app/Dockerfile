@@ -12,5 +12,8 @@ EXPOSE 8001
 # Assuming the correct Docker tools are in a local directory named 'docker-tools'
 #COPY ../docker-tools/ /usr/local/bin/
 
-EXPOSE 8001
+COPY ./entrypoint.sh /code/entrypoint.sh
+RUN chmod +x /code/entrypoint.sh
+ENTRYPOINT ["/code/entrypoint.sh"]
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]

@@ -1,6 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-# Create your views here.
+from .models import Listing
 
-def home(request):
-    return render(request, "hub/home.html")
+def add(request):
+    return render(request, "hub/add.html")
+
+def gallery(request):
+    items = Listing.objects.all()  # gets all objects from your model
+    field_names = [field.name for field in Listing._meta.fields]
+    return render(request, 'hub/gallery.html', {'items': items, 'field_names': field_names})
+
+def settings(request):
+    return render(request, 'hub/settings.html')

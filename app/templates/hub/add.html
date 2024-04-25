@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends "hub/base.html" %} 
+{% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'hub/css/add.css' %}">
+  
+{% endblock %}
+{% block title %} Home {% endblock %} 
+{% block content %}
+
+
+
+<div class="container">
+  <h1>Sprzedaj przedmiot</h1>
+  <div class="input-group" id="drop-zone">
+    <button id="file-input">+ Dodaj zdjęcia</button>
+  </div>
+  <button id="bg-select-button">Wybierz tło</button>
+  <button id="rmbg-button">Remove background</button>
+  <div class="input-group">
+    <label for="title">Tytuł</label>
+    <input type="text" id="title" placeholder="np. Biały Sweter COS" />
+  </div>
+  <div class="input-group">
+    <label for="description">Opisz swój przedmiot</label>
+    <textarea
+      id="description"
+      placeholder="np. założone tylko kilka razy, rozmiar zgodny z metką"
+    ></textarea>
+  </div>
+  <div class="input-group">
+    <label for="category">Kategorie</label>
+    <select id="category">
+      <option>Wybierz kategorię</option>
+      <!-- Categories options -->
+    </select>
+  </div>
+  <div class="input-group price">
+    <label for="price">Cena</label>
+    <input type="text" id="price" placeholder="0,00 zł" />
+  </div>
+  <div class="checkbox-group">
+    <input type="checkbox" id="charity" />
+    <label for="charity"
+      >Otrzymasz 0,00 zł ze sprzedaży tego przedmiotu, a 0,00 zł zostanie
+      przekazane na cele charytatywne.</label
+    >
+  </div>
+  <div class="input-group">
+    <label>Co myślisz o procesie dodawania ogłoszenia?</label>
+    <button>Podziel się opinią</button>
+  </div>
+  <div class="footer">
+    <button>Wersja robocza</button>
+    <button>Dodaj</button>
+  </div>
+</div>
+<script src="{% static 'hub/js/add.js' %}"></script>
+<script src="{% static 'hub/js/inference.js' %}"></script>
+{% endblock %}
