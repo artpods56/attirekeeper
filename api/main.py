@@ -1,4 +1,5 @@
-from fastapi import FastAPI, File, UploadFile
+from typing import List
+from fastapi import FastAPI, File, UploadFile, Request
 from fastapi.responses import FileResponse
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,16 +63,25 @@ async def remove_background(file: UploadFile = File(...)):
 
     return StreamingResponse(img_byte_arr, media_type="image/png")
 
-@app.route('/add-background/', methods=['POST'])
-def add_background():
-    foreground = Image.open(request.files['foreground'])
-    background = Image.open(request.files['background'])
+@app.post('/add-background/')
+def add_background(request: Request, files: List[UploadFile] = File(...)):
+    foreground = Image.open(files[1].file)
+    background = Image.open(files[0].file)
 
-    # Resize foreground or background here if necessary
+    # Resize background to match the size of the foreground
+    background = background.resize(foreground.size)
 
-    background.paste(foreground, (0, 0), foreground)
-    byte_arr = io.BytesIO()
+    # If the foreground image has an alpha channel, use it as the mask
+    mask = None
+    if foreground.mode == 'RGBA':
+        mask = foreground.split()[3]  # The alpha channel
+
+    background.paste(foreground, (0, 0), mask)
+    byte_arr = BytesIO()
+
+    # Convert image to RGB before saving
+    background = background.convert('RGB')
     background.save(byte_arr, format='JPEG')
     byte_arr.seek(0)
     
-    return StreamingResponse(byte_arr, media_type='image/png')
+    return StreamingResponse(byte_arr, media_type='image/jpeg')

@@ -10,7 +10,7 @@ function createAddButton(addButtonID) {
   const addButton = document.createElement("div");
   addButton.classList.add("grid-button");
   addButton.id = addButtonID;
-  addButton.innerHTML = `<button>+</button>`; //id="${addButtonID}"
+  addButton.innerHTML = `<button>+</button>`; 
   addButton.addEventListener("click", () => fileInput.click());
   addButton.style.cursor = "pointer";
   addButton.style.display = "inline-block";
@@ -49,7 +49,6 @@ function setupDropZone(dropZone) {
     const dropZoneID = dropZone.id; // Local scope
     const buttonID = document.querySelector(`#${dropZoneID} button`).id;
 
-    console.log(buttonID);
     handleFiles(files, dropZoneID, buttonID);
     fileInput.value = "";
   });
@@ -71,7 +70,6 @@ function setupButtonInput(buttonInput, dropZoneID = null) {
     }
     //const dropZoneID = buttonInput.parentNode.id; // Local scope
     const buttonID = buttonInput.id;
-    console.log(buttonID);
     handleFiles(files, dropZoneID, buttonID);
     fileInput.value = "";
   });
@@ -84,15 +82,13 @@ setupDropZone(clothesDropZone);
 setupButtonInput(clothesButton);
 
 function updateThumbnails(dropZoneID) {
-  console.log("Updating thumbnails");
-  console.log;
   const dropZone = document.getElementById(dropZoneID);
   let thumbnailsContainer = document.getElementById(dropZoneID + "-thumbnails");
   if (!thumbnailsContainer) {
     const grid = document.createElement("div");
     grid.id = dropZoneID + "-thumbnails";
     grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(5, 1fr)";
+    grid.style.gridTemplateColumns = "repeat(6, 1fr)";
     grid.style.gridAutoRows = "1fr";
     grid.style.alignItems = "stretch";
 
@@ -154,15 +150,9 @@ function createThumbnail(file, dropZoneID, buttonID) {
     const elementsToRemove = thumbnailsContainer.querySelectorAll('.grid-button');
     elementsToRemove.forEach(element => element.remove());
 
-
-    // if (thumbnailsContainer.contains(addButton)) {
-    //   // thumbnailsContainer.removeChild(addButton);
-    //   addButton.remove();
-    // }
-
     addButton = createAddButton(buttonID);
     setupButtonInput(addButton, dropZoneID);
-    //addButton.remove()
+
 
     imgContainer.appendChild(img);
     imgContainer.appendChild(removeBtn);
@@ -177,21 +167,6 @@ function createThumbnail(file, dropZoneID, buttonID) {
 
     
     thumbnailsContainer.appendChild(addButton);
-    //thumbnailsContainer.appendChild(addButton);
-    // if (!thumbnailsContainer.contains(addButton)) {
-    //   thumbnailsContainer.appendChild(addButton);
-    //   console.log("appended")
-    // } else {
-    //   //thumbnailsContainer.removeChild(addButton);
-    //   addButton.remove();
-    //   console.log("removed")
-    //}
-
-    //const hasChild = thumbnailsContainer.querySelector(`#${buttonID}`) !== null;
-
-    //console.log(hasChild);
-
-    //thumbnailsContainer.appendChild(addButton);
 
     if (thumbnailsContainer.children.length >= 1) {
       buttonInput.hidden = true;
