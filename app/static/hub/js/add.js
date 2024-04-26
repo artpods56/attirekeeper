@@ -1,56 +1,96 @@
-const fileInput = document.createElement("input");
+function createFileInput() {
+  const fileInput = document.createElement("input");
+  fileInput.setAttribute("type", "file");
+  fileInput.setAttribute("multiple", "");
+  fileInput.style.display = "none";
+  return fileInput;
+}
 
-fileInput.setAttribute("type", "file");
-fileInput.setAttribute("multiple", "");
-fileInput.style.display = "none";
+function createAddButton(addButtonID) {
+  const addButton = document.createElement("div");
+  addButton.classList.add("grid-button");
+  addButton.id = addButtonID;
+  addButton.innerHTML = `<button>+</button>`; //id="${addButtonID}"
+  addButton.addEventListener("click", () => fileInput.click());
+  addButton.style.cursor = "pointer";
+  addButton.style.display = "inline-block";
+  addButton.style.width = "50px";
+  addButton.style.height = "50px";
+  addButton.style.display = "flex";
+  addButton.style.fontSize = "30px";
+  addButton.style.color = "#ccc";
+  return addButton;
+}
 
-const dropZone = document.getElementById("drop-zone");
-const buttonInput = document.getElementById("file-input");
+const clothesDropZone = document.getElementById("clothes-drop-zone");
+const clothesButton = document.getElementById("clothes-file-input");
 
-dropZone.appendChild(fileInput);
-buttonInput.appendChild(fileInput);
+const backgroundDropZone = document.getElementById("background-drop-zone");
+const backgroundButton = document.getElementById("background-file-input");
 
-const addButton = document.createElement("div");
-addButton.classList.add("file-input");
-addButton.innerHTML = '<button id="file-input">+</button>';
-addButton.addEventListener("click", () => fileInput.click());
-addButton.style.cursor = "pointer";
-addButton.style.display = "inline-block";
-addButton.style.width = "50px";
-addButton.style.height = "50px";
-addButton.style.display = "flex";
-addButton.style.fontSize = "30px";
-addButton.style.color = "#ccc";
+function setupDropZone(dropZone) {
+  const fileInput = createFileInput(); // Create a new instance for each drop zone
+  dropZone.appendChild(fileInput);
 
-buttonInput.addEventListener("click", () => fileInput.click());
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drop-zone--over");
+  });
 
-dropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  dropZone.classList.add("drop-zone--over");
-});
+  dropZone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drop-zone--over");
+  });
 
-dropZone.addEventListener("dragleave", (e) => {
-  e.preventDefault();
-  dropZone.classList.remove("drop-zone--over");
-});
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drop-zone--over");
+    const files = e.dataTransfer.files;
+    const dropZoneID = dropZone.id; // Local scope
+    const buttonID = document.querySelector(`#${dropZoneID} button`).id;
 
-dropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  dropZone.classList.remove("drop-zone--over");
-  const files = e.dataTransfer.files;
-  handleFiles(files);
-});
+    console.log(buttonID);
+    handleFiles(files, dropZoneID, buttonID);
+    fileInput.value = "";
+  });
+}
 
-fileInput.addEventListener("change", (e) => {
-  const files = e.target.files;
-  handleFiles(files);
-});
+function setupButtonInput(buttonInput, dropZoneID = null) {
+  const fileInput = createFileInput(); // Create a new instance for each button
+  buttonInput.appendChild(fileInput);
 
-function updateThumbnails() {
-  const thumbnailsContainer = document.getElementById("thumbnails");
+  buttonInput.addEventListener("click", () => {
+    // const dropZoneID = buttonInput.parentNode.id; // Local scope
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", (e) => {
+    const files = e.target.files;
+    if (dropZoneID === null) {
+      dropZoneID = buttonInput.parentNode.id; // Local scope
+    }
+    //const dropZoneID = buttonInput.parentNode.id; // Local scope
+    const buttonID = buttonInput.id;
+    console.log(buttonID);
+    handleFiles(files, dropZoneID, buttonID);
+    fileInput.value = "";
+  });
+}
+
+setupDropZone(backgroundDropZone);
+setupButtonInput(backgroundButton);
+
+setupDropZone(clothesDropZone);
+setupButtonInput(clothesButton);
+
+function updateThumbnails(dropZoneID) {
+  console.log("Updating thumbnails");
+  console.log;
+  const dropZone = document.getElementById(dropZoneID);
+  let thumbnailsContainer = document.getElementById(dropZoneID + "-thumbnails");
   if (!thumbnailsContainer) {
     const grid = document.createElement("div");
-    grid.id = "thumbnails";
+    grid.id = dropZoneID + "-thumbnails";
     grid.style.display = "grid";
     grid.style.gridTemplateColumns = "repeat(5, 1fr)";
     grid.style.gridAutoRows = "1fr";
@@ -66,7 +106,9 @@ function updateThumbnails() {
   return thumbnailsContainer;
 }
 
-function createThumbnail(file) {
+function createThumbnail(file, dropZoneID, buttonID) {
+  const buttonInput = document.getElementById(buttonID);
+
   const reader = new FileReader();
 
   reader.onload = function (e) {
@@ -95,7 +137,7 @@ function createThumbnail(file) {
 
     removeBtn.onclick = function () {
       imgContainer.remove();
-      const thumbnailsContainer = updateThumbnails();
+      const thumbnailsContainer = updateThumbnails(dropZoneID);
       imgContainers = thumbnailsContainer.querySelector(".img-container");
 
       if (!imgContainers) {
@@ -105,6 +147,23 @@ function createThumbnail(file) {
       }
     };
 
+    const thumbnailsContainer = updateThumbnails(dropZoneID);
+
+    addButton = document.getElementById(buttonID);
+
+    const elementsToRemove = thumbnailsContainer.querySelectorAll('.grid-button');
+    elementsToRemove.forEach(element => element.remove());
+
+
+    // if (thumbnailsContainer.contains(addButton)) {
+    //   // thumbnailsContainer.removeChild(addButton);
+    //   addButton.remove();
+    // }
+
+    addButton = createAddButton(buttonID);
+    setupButtonInput(addButton, dropZoneID);
+    //addButton.remove()
+
     imgContainer.appendChild(img);
     imgContainer.appendChild(removeBtn);
 
@@ -112,19 +171,27 @@ function createThumbnail(file) {
       console.log("clicked");
       img.classList.toggle("selected");
     });
-    imgContainer.appendChild(addButton);
 
-    const thumbnailsContainer = updateThumbnails();
-
-    if (thumbnailsContainer.contains(addButton)) {
-      thumbnailsContainer.removeChild(addButton);
-    }
-
+    
     thumbnailsContainer.appendChild(imgContainer);
 
-    if (thumbnailsContainer.children.length < 20) {
-      thumbnailsContainer.appendChild(addButton);
-    }
+    
+    thumbnailsContainer.appendChild(addButton);
+    //thumbnailsContainer.appendChild(addButton);
+    // if (!thumbnailsContainer.contains(addButton)) {
+    //   thumbnailsContainer.appendChild(addButton);
+    //   console.log("appended")
+    // } else {
+    //   //thumbnailsContainer.removeChild(addButton);
+    //   addButton.remove();
+    //   console.log("removed")
+    //}
+
+    //const hasChild = thumbnailsContainer.querySelector(`#${buttonID}`) !== null;
+
+    //console.log(hasChild);
+
+    //thumbnailsContainer.appendChild(addButton);
 
     if (thumbnailsContainer.children.length >= 1) {
       buttonInput.hidden = true;
@@ -133,37 +200,8 @@ function createThumbnail(file) {
   reader.readAsDataURL(file);
 }
 
-function handleFiles(files) {
+function handleFiles(files, dropZoneID, buttonID) {
   for (let i = 0; i < files.length; i++) {
-    createThumbnail(files[i]);
+    createThumbnail(files[i], dropZoneID, buttonID);
   }
-
-  fileInput.value = "";
 }
-
-const rmbgButton = document.getElementById("rmbg-button");
-
-const bgButton = document.getElementById("bg-select-button");
-
-rmbgButton.addEventListener('click', async () => {
-    console.log('rmbgButton clicked');
-    const selectedImages = document.querySelectorAll('img.img-container.selected');
-    
-    if (selectedImages.length === 0) {
-        alert('No images selected');
-        return;
-    }
-    for (let img of selectedImages) {
-        let formData = new FormData();
-        const responseBlob = await fetch(img.src).then(r => r.blob()); 
-        formData.append('file', responseBlob, 'image.jpg');
-  
-        const response = await fetch('http://localhost:8000/remove-bg/', {
-            method: 'POST',
-            body: formData,
-        });
-        const imageBlob = await response.blob();
-        const imageUrl = URL.createObjectURL(imageBlob);
-        createThumbnail(imageBlob);
-    }
-  });

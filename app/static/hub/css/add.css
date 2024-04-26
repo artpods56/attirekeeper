@@ -1,4 +1,4 @@
-#drop-zone {
+.drop-zone {
   border: 2px dashed #cccccc;
   border-radius: 10px;
   padding: 20px;
@@ -6,11 +6,11 @@
   color: #cccccc;
   margin-bottom: 20px;
 }
-#drop-zone:hover {
+.drop-zone:hover {
   background-color: #f8f8f8;
 }
 
-#file-input {
+.file-input {
     padding: 10px 20px;
     background-color: #337ab7;
     color: white;
@@ -46,8 +46,8 @@ body {
   height: 120px;
 }
 .input-group button {
-  padding: 10px 15px;
-  background-color: #5cb85c;
+  padding: 10px 20px;
+  background-color: #337ab7;
   color: white;
   border: none;
   border-radius: 4px;

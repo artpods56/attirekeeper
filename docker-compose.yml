@@ -46,7 +46,7 @@ services:
     networks:
       - backend
     depends_on:
-      - postgres
+      - api
 
   postgres:
     image: postgres:latest
@@ -64,6 +64,8 @@ services:
         target: /var/lib/postgresql/data
     networks:
       - backend
+    depends_on:
+      - app
 
   pgadmin:
     image: dpage/pgadmin4:latest

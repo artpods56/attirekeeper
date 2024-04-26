@@ -61,3 +61,17 @@ async def remove_background(file: UploadFile = File(...)):
     img_byte_arr.seek(0)
 
     return StreamingResponse(img_byte_arr, media_type="image/png")
+
+@app.route('/add-background/', methods=['POST'])
+def add_background():
+    foreground = Image.open(request.files['foreground'])
+    background = Image.open(request.files['background'])
+
+    # Resize foreground or background here if necessary
+
+    background.paste(foreground, (0, 0), foreground)
+    byte_arr = io.BytesIO()
+    background.save(byte_arr, format='JPEG')
+    byte_arr.seek(0)
+    
+    return StreamingResponse(byte_arr, media_type='image/png')

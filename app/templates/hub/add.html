@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-{% extends "hub/base.html" %} 
-{% load static %}
-{% block extra_css %}
-  <link rel="stylesheet" type="text/css" href="{% static 'hub/css/add.css' %}">
-  
-{% endblock %}
-{% block title %} Home {% endblock %} 
-{% block content %}
+{% extends "hub/base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'hub/css/add.css' %}" />
 
-
+{% endblock %} {% block title %} Home {% endblock %} {% block content %}
 
 <div class="container">
-  <h1>Sprzedaj przedmiot</h1>
-  <div class="input-group" id="drop-zone">
-    <button id="file-input">+ Dodaj zdjęcia</button>
+  <div class="input-group drop-zone" id="clothes-drop-zone">
+    <button class = "file-input" id="clothes-file-input">+ Dodaj zdjęcia</button>
   </div>
+  <div class="input-group drop-zone" id="background-drop-zone">
+    <button class = "file-input" id="background-file-input">+ Dodaj zdjęcia</button>
+  </div>
+
   <button id="bg-select-button">Wybierz tło</button>
   <button id="rmbg-button">Remove background</button>
   <div class="input-group">
