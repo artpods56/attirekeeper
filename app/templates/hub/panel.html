@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends "hub/base.html" %} {% load static %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'hub/css/panel.css' %}"
+/>
+
+{% endblock %} {% block title %} Home {% endblock %} {% block content %}
+
+<div class="content grid">
+  <div class="widget widget-clothes-photos">
+    <label for="image-upload">Add up to 20 clothing pictures:</label>
+    <div class="input-group drop-zone" id="clothes-drop-zone">
+      <button class="file-input" id="clothes-file-input">
+        + Dodaj zdjęcia
+      </button>
+    </div>
+  </div>
+
+  <div class="widget widget-background-photos">
+    <label for="image-upload">Add background pictures:</label>
+    <div class="input-group drop-zone" id="background-drop-zone">
+      <button class="file-input" id="background-file-input">
+        + Dodaj zdjęcia
+      </button>
+    </div>
+  </div>
+  <div class="widget widget-result-photos">
+    <div class="input-group drop-zone">
+      <label for="gallery"></label>
+      <div id="gallery" class="gallery-container">
+        <!-- Images will be added here dynamically -->
+      </div>
+    </div>
+  </div>
+  <div class="widget widget-remove-background">
+    <button id="rmbg-button">Remove background</button>
+  </div>
+  <script src="{% static 'hub/js/panel.js' %}"></script>
+  <script src="{% static 'hub/js/inference.js' %}"></script>
+  {% endblock %}
+</div>

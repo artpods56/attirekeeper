@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} <!-- Title Name -->  #}{% endblock %}</title>
     {% load static %}
-    {% block extra_css %}{% endblock %}
+
     <link rel="stylesheet" href="{% static 'hub/css/styles.css' %}" />
+    {% block extra_css %}{% endblock %}
   </head>
   <body>
-    <div class="header">
-        <nav>
-            <a href="{% url 'gallery' %}" class="nav-button">Wardrobe</a>
-            <a href="{% url 'add' %}" class="nav-button">Add</a>
-            <a href="{% url 'settings' %}" class="nav-button">Settings</a>
-        </nav>
+    <div class="navbar">
+      <a class="nav-item" href="#mail">Mail</a>
+      <a class="nav-item" href="#contacts">Contacts</a>
+      <a class="nav-item" href="#calendar">Calendar</a>
     </div>
     {% block content %}<!-- Page content   -->{% endblock %}
   </body>

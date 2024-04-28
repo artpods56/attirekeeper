@@ -11,3 +11,7 @@ def gallery(request):
 
 def settings(request):
     return render(request, 'hub/settings.html')
+
+
+def panel(request):
+    return render(request, 'hub/panel.html')

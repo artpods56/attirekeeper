@@ -1,0 +1,124 @@
+.grid {
+  display: grid;
+  gap: 20px;
+
+  grid-template-areas:
+    "A A A A   A A A C C C C C C"
+    "A A A A   A A A C C C C C C"
+    "B B B B   B B B C C C C C C"
+    "B B B B   B B B C C C C C C"
+    "D D E E   E E E E E E E E E"
+    "D D E E   E E E E E E E E E";
+}
+
+.widget-clothes-photos {
+  grid-area: A;
+}
+.widget-background-photos {
+  grid-area: B;
+}
+.widget-result-photos {
+  grid-area: C;
+}
+.widget-remove-background {
+  grid-area: D;
+}
+.widget-empty {
+  grid-area: E;
+}
+
+.widget {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+}
+
+.img-remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background: rgb(236, 91, 91);
+  color: black;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.img-remove-button:hover {
+  background: rgb(245, 80, 80);
+  transition: all 0.3s ease-in-out;
+  transform: scale(1.05);
+}
+
+.drop-zone {
+  border: 2px dashed #d6d6d6;
+  border-radius: 10px;
+  padding: 20px;
+  color: #cccccc;
+  min-height: 100px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.drop-zone:hover {
+  background-color: #f8f8f8;
+}
+
+.file-input {
+  padding: 10px 20px;
+  background-color: #337ab7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 47.8px;
+}
+
+
+.input-group {
+  margin: 20px;
+}
+.input-group label {
+  display: block;
+  color: #666;
+  margin-bottom: 5px;
+}
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+/* .input-group button:hover {
+  background-color: #4b9ce2;
+} */
+
+.img-container {
+  transition: all 0.3s ease-in-out;
+}
+
+.selected {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}

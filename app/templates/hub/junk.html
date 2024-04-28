@@ -95,3 +95,228 @@ function updateThumbnails() {
   
     return thumbnailsContainer;
   }
+
+
+###
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Improved Navigation Bar</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+
+  .navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    padding: 1em 0;
+  }
+
+  .nav-item {
+    margin: 0 15px;
+    position: relative;
+    padding-bottom: 5px;
+    text-decoration: none;
+    color: #333333;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .nav-item:hover,
+  .nav-item:focus {
+    color: #0078d4;
+    cursor: pointer;
+  }
+
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0%;
+    height: 2px;
+    background-color: #0078d4;
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .nav-item:hover::after,
+  .nav-item:focus::after {
+    width: 100%;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <a class="nav-item" href="#mail">Mail</a>
+  <a class="nav-item" href="#contacts">Contacts</a>
+  <a class="nav-item" href="#calendar">Calendar</a>
+</div>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Improved Layout with Content Container</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+
+      .navbar {
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        padding: 1em 0;
+      }
+
+      .nav-item {
+        margin: 0 15px;
+        position: relative;
+        padding-bottom: 5px;
+        text-decoration: none;
+        color: #333333;
+        text-transform: uppercase;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      .nav-item:hover,
+      .nav-item:focus {
+        color: #0078d4;
+        cursor: pointer;
+      }
+
+      .nav-item::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0%;
+        height: 2px;
+        background-color: #0078d4;
+        transition: width 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .nav-item:hover::after,
+      .nav-item:focus::after {
+        width: 100%;
+      }
+
+      .content {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        display: block;
+        justify-content: center;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+
+        grid-template-areas:
+          "A A A A   A A A A   A A A A D D"
+          "B B B B   B B B B   B B C C D D"
+          "B B B B   B B B B   B B C C D D";
+      }
+
+      .widget-1 {
+        grid-area: A;
+      }
+      .widget-2 {
+        grid-area: B;
+      }
+      .widget-3 {
+        grid-area: C;
+      }
+      .widget-4 {
+        grid-area: D;
+      }
+
+      .widget {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+      }
+
+      .input-group {
+        margin-bottom: 10px; /* Space between input groups */
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px; /* Space between label and input */
+      }
+
+      .input-group input,
+      .input-group select {
+        width: 100%; /* Full width */
+        padding: 10px;
+        margin-bottom: 5px; /* Space between inputs */
+        border: 1px solid #ccc; /* Light grey border */
+        border-radius: 4px;
+      }
+
+      .input-group textarea {
+        width: 100%;
+        height: 100px; /* Adjust height as necessary */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical; /* Allow vertical resize */
+      }
+
+      .input-group input[type="file"] {
+        border: none; /* No border for file input */
+      }
+
+      .submit-button {
+        padding: 10px 20px;
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <a class="nav-item" href="#mail">Mail</a>
+      <a class="nav-item" href="#contacts">Contacts</a>
+      <a class="nav-item" href="#calendar">Calendar</a>
+    </div>
+
+    <div class="content grid">
+      <div class="widget widget-1">Widget 1</div>
+      <div class="widget widget-2">Widget 2</div>
+      <div class="widget widget-3">Widget 5</div>
+      <div class="widget widget-4">Widget 5</div>
+
+  </body>
+</html>

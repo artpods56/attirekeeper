@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hub.views import gallery, add, settings
+from hub.views import gallery, add, settings, panel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gallery/', gallery, name='gallery'),
     path('add/', add, name='add'),
     path('settings/', settings, name='settings'),
+    path('panel/', panel, name='panel')
 ]

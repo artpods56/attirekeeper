@@ -59,17 +59,17 @@ button.addEventListener("click", async () => {
     imageBlobs.push(finalImageBlob);
   }
 
-  function updateThumbnails(galleryID) {
+  function updateThumbnails(galleryID, colNum = 6) {
     const Gallery = document.getElementById(galleryID);
-    let thumbnailsContainer = document.getElementById(Gallery + "-thumbnails");
+    let thumbnailsContainer = document.getElementById(galleryID + "-thumbnails");
     if (!thumbnailsContainer) {
       const grid = document.createElement("div");
-      grid.id = Gallery + "-thumbnails";
+      grid.id = galleryID + "-thumbnails";
       grid.style.display = "grid";
-      grid.style.gridTemplateColumns = "repeat(6, 1fr)";
+      grid.style.gridTemplateColumns = `repeat(${colNum}, 1fr)`;
       grid.style.gridAutoRows = "1fr";
       grid.style.alignItems = "stretch";
-
+      grid.style.height = "100%";
       grid.style.gap = "20px";
       grid.style.justifyItems = "center";
       grid.style.alignItems = "center";
@@ -82,7 +82,7 @@ button.addEventListener("click", async () => {
 
   for (let i = 0; i < imageBlobs.length; i++) {
 
-    galleryContainer = updateThumbnails("gallery");
+    galleryContainer = updateThumbnails("gallery" , colNum = 2);
 
     const imgContainer = document.createElement("div");
     imgContainer.style.position = "relative";

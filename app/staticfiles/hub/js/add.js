@@ -49,7 +49,6 @@ function setupDropZone(dropZone) {
     const dropZoneID = dropZone.id; // Local scope
     const buttonID = document.querySelector(`#${dropZoneID} button`).id;
 
-    console.log(buttonID);
     handleFiles(files, dropZoneID, buttonID);
     fileInput.value = "";
   });
@@ -71,7 +70,6 @@ function setupButtonInput(buttonInput, dropZoneID = null) {
     }
     //const dropZoneID = buttonInput.parentNode.id; // Local scope
     const buttonID = buttonInput.id;
-    console.log(buttonID);
     handleFiles(files, dropZoneID, buttonID);
     fileInput.value = "";
   });
@@ -84,8 +82,6 @@ setupDropZone(clothesDropZone);
 setupButtonInput(clothesButton);
 
 function updateThumbnails(dropZoneID) {
-  console.log("Updating thumbnails");
-  console.log;
   const dropZone = document.getElementById(dropZoneID);
   let thumbnailsContainer = document.getElementById(dropZoneID + "-thumbnails");
   if (!thumbnailsContainer) {

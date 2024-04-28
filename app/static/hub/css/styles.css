@@ -1,102 +1,126 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  padding: 20px;
-}
-.header {
-  background: white;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.search-box {
-  display: flex;
-  align-items: center;
-}
-.search-box input {
-  padding: 10px;
-  margin-right: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.assets-list {
-  background: white;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th,
-td {
-  text-align: left;
-  padding: 12px 10px;
-}
-th {
-  background-color: #f9f9f9;
-}
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-.status {
-  border-radius: 10px;
-  color: white;
-  padding: 3px 10px;
-  text-align: center;
-}
-.repair {
-  background-color: #f44336;
-}
-.active {
-  background-color: #4caf50;
-}
-.order {
-  background-color: #ff9800;
-}
-.purchase {
-  background-color: #2196f3;
-}
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-.pagination button {
-  padding: 8px 16px;
-  margin: 0 4px;
-  border: none;
-  border-radius: 4px;
-  background-color: #ddd;
-}
-.pagination button:hover {
-  background-color: #ccc;
+  padding: 0;
+  background-color: #f0f0f0;
 }
 
-.nav-button {
-  background-color: #80ccff;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  padding: 1em 0;
+}
+
+.nav-item {
+  margin: 0 15px;
+  position: relative;
+  padding-bottom: 5px;
   text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  color: #333333;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover,
+.nav-item:focus {
+  color: #0078d4;
   cursor: pointer;
 }
 
-.nav-button:hover {
-  background-color: #45a049;
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background-color: #0078d4;
+  transition: width 0.3s ease;
+  transform: translateX(-50%);
 }
 
-.input_field {
-  margin: 10px 0;
+.nav-item:hover::after,
+.nav-item:focus::after {
   width: 100%;
 }
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+<a class="nav-item" href="#mail">Mail</a>
+<a class="nav-item" href="#contacts">Contacts</a>
+<a class="nav-item" href="#calendar">Calendar</a>
+</div>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Improved Layout with Content Container</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      padding: 1em 0;
+    }
+
+    .nav-item {
+      margin: 0 15px;
+      position: relative;
+      padding-bottom: 5px;
+      text-decoration: none;
+      color: #333333;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item:hover,
+    .nav-item:focus {
+      color: #0078d4;
+      cursor: pointer;
+    }
+
+    .nav-item::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0%;
+      height: 2px;
+      background-color: #0078d4;
+      transition: width 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-item:hover::after,
+    .nav-item:focus::after {
+      width: 100%;
+    }
+
+    .content {
+      max-width: 1600px;
+      margin: 40px auto;
+      padding: 20px;
+      display: block;
+    }
 
