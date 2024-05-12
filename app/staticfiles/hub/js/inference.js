@@ -59,17 +59,17 @@ button.addEventListener("click", async () => {
     imageBlobs.push(finalImageBlob);
   }
 
-  function updateThumbnails(galleryID) {
+  function updateThumbnails(galleryID, colNum = 6) {
     const Gallery = document.getElementById(galleryID);
-    let thumbnailsContainer = document.getElementById(Gallery + "-thumbnails");
+    let thumbnailsContainer = document.getElementById(galleryID + "-thumbnails");
     if (!thumbnailsContainer) {
       const grid = document.createElement("div");
-      grid.id = Gallery + "-thumbnails";
+      grid.id = galleryID + "-thumbnails";
       grid.style.display = "grid";
-      grid.style.gridTemplateColumns = "repeat(6, 1fr)";
+      grid.style.gridTemplateColumns = `repeat(${colNum}, 1fr)`;
       grid.style.gridAutoRows = "1fr";
       grid.style.alignItems = "stretch";
-
+      grid.style.height = "100%";
       grid.style.gap = "20px";
       grid.style.justifyItems = "center";
       grid.style.alignItems = "center";
@@ -82,23 +82,39 @@ button.addEventListener("click", async () => {
 
   for (let i = 0; i < imageBlobs.length; i++) {
 
-    galleryContainer = updateThumbnails("gallery");
 
-    const imgContainer = document.createElement("div");
-    imgContainer.style.position = "relative";
-    imgContainer.style.display = "inline-block";
-    imgContainer.classList.add("grid-item");
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      thumbnailsContainer = document.getElementById("gallery");
+      let imageCounter = thumbnailsContainer.querySelectorAll(".img-container").length;
+      imageCounter++;
+      console.log("imageCounter: ", imageCounter)
+      const imgContainer = document.createElement("div");
+      imgContainer.style.position = "relative";
+      imgContainer.style.display = "inline-block";
+      imgContainer.classList.add("grid-item");
 
+      const img = document.createElement("img");
+      img.classList.add("img-container");
+      img.src = e.target.result;
+      img.style.width = "100%";
+      img.style.height = "auto";
+      img.style.borderRadius = "4px";
 
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(imageBlobs[i]);
-    img.classList.add("img-container");
-    img.style.width = "100%";
-    img.style.height = "auto";
-    img.style.borderRadius = "4px";
+      const removeBtn = document.createElement("button");
+      removeBtn.classList.add("img-remove-button");
 
-    imgContainer.appendChild(img);
-    galleryContainer.appendChild(imgContainer);
+      removeBtn.onclick = function () {
+        imgContainer.remove();
+      };
+
+      imgContainer.appendChild(img);
+      imgContainer.appendChild(removeBtn);
+      thumbnailsContainer.appendChild(imgContainer);
+    };
+
+    reader.readAsDataURL(imageBlobs[i]);
+
 
 
   }

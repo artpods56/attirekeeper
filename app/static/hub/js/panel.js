@@ -1,6 +1,6 @@
-window.addEventListener('load', () => {
-  const widgets = document.querySelectorAll('.widget');
-  widgets.forEach(widget => {
+window.addEventListener("load", () => {
+  const widgets = document.querySelectorAll(".widget");
+  widgets.forEach((widget) => {
     const width = getComputedStyle(widget).width;
     console.log(width);
     widget.style.minWidth = width;
@@ -19,7 +19,7 @@ function createAddButton(addButtonID) {
   const addButton = document.createElement("button");
   addButton.classList.add("file-input");
   addButton.id = addButtonID;
-  addButton.innerHTML = `+`; 
+  addButton.innerHTML = `+`;
   addButton.addEventListener("click", () => fileInput.click());
 
   return addButton;
@@ -105,12 +105,24 @@ function updateThumbnails(dropZoneID) {
   return thumbnailsContainer;
 }
 
-function createThumbnail(file, dropZoneID, buttonID) {
+
+
+function createThumbnail(file, dropZoneID, buttonID, maxImages) {
+  
+  
   const buttonInput = document.getElementById(buttonID);
 
   const reader = new FileReader();
 
   reader.onload = function (e) {
+    thumbnailsContainer = document.getElementById(dropZoneID);
+    let imageCounter = thumbnailsContainer.querySelectorAll(".img-container").length;
+    imageCounter++;
+    if (imageCounter > maxImages) {
+      return;
+    }
+    console.log("debugging")
+    console.log("imageCounter: ", imageCounter)
     const imgContainer = document.createElement("div");
     imgContainer.style.position = "relative";
     imgContainer.style.display = "inline-block";
@@ -126,9 +138,16 @@ function createThumbnail(file, dropZoneID, buttonID) {
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("img-remove-button");
 
-    removeBtn.onclick = function () {
+    removeBtn.onclick = function (dropZoneID) {
       imgContainer.remove();
-      const thumbnailsContainer = updateThumbnails(dropZoneID);
+      // let thumbnailsContainer = document.getElementById(dropZoneID);
+      let numberOfPhotos =
+        thumbnailsContainer.querySelectorAll(".img-container").length;
+      // if addButton is hidden and number of photos is less than maxImages, show addButton
+      if (numberOfPhotos < maxImages && addButton.hidden) {
+        addButton.hidden = false;
+      }
+
       imgContainers = thumbnailsContainer.querySelector(".img-container");
 
       if (!imgContainers) {
@@ -138,18 +157,16 @@ function createThumbnail(file, dropZoneID, buttonID) {
       }
     };
 
-
-
-    const thumbnailsContainer = updateThumbnails(dropZoneID);
+    thumbnailsContainer = updateThumbnails(dropZoneID);
 
     addButton = document.getElementById(buttonID);
 
-    const elementsToRemove = thumbnailsContainer.querySelectorAll('.file-input');
-    elementsToRemove.forEach(element => element.remove());
+    const elementsToRemove =
+      thumbnailsContainer.querySelectorAll(".file-input");
+    elementsToRemove.forEach((element) => element.remove());
 
     addButton = createAddButton(buttonID);
     setupButtonInput(addButton, dropZoneID);
-
 
     imgContainer.appendChild(img);
     imgContainer.appendChild(removeBtn);
@@ -159,13 +176,17 @@ function createThumbnail(file, dropZoneID, buttonID) {
       img.classList.toggle("selected");
     });
 
-    
     thumbnailsContainer.appendChild(imgContainer);
 
-    
     thumbnailsContainer.appendChild(addButton);
+    let numberOfPhotos =
+      thumbnailsContainer.querySelectorAll(".img-container").length;
 
-    if (thumbnailsContainer.children.length >= 1) {
+    if (numberOfPhotos >= maxImages) {
+      addButton.hidden = true;
+    }
+
+    if (numberOfPhotos >= 1) {
       buttonInput.hidden = true;
     }
   };
@@ -173,12 +194,29 @@ function createThumbnail(file, dropZoneID, buttonID) {
 }
 
 function handleFiles(files, dropZoneID, buttonID) {
+  if (dropZoneID === "clothes-drop-zone") {
+    maxImages = 20;
+  } else if (dropZoneID === "background-drop-zone") {
+    maxImages = 4;
+  }
   for (let i = 0; i < files.length; i++) {
-    // check number of photos in the images container
-    // if more than 20, don't add more
-    const thumbnailsContainer = document.getElementById(dropZoneID);
-    const numberOfPhotos = thumbnailsContainer.querySelectorAll(".img-container").length;
-    console.log(numberOfPhotos);
-    createThumbnail(files[i], dropZoneID, buttonID);
+    createThumbnail(files[i], dropZoneID, buttonID, maxImages);
+  }
+}
+
+function showAdditionalFields() {
+  var category = document.getElementById("category").value;
+  var topGarmentFields = document.getElementById("top-garment-fields");
+  var bottomGarmentFields = document.getElementById("bottom-garment-fields");
+
+  // Ukryj wszystkie pola
+  topGarmentFields.style.display = 'none';
+  bottomGarmentFields.style.display = 'none';
+
+  // Wyświetl odpowiednie pola w zależności od wybranej kategorii
+  if (category === "top-garment") {
+    topGarmentFields.style.display = 'block';
+  } else if (category === "bottom-garment") {
+    bottomGarmentFields.style.display = 'block';
   }
 }

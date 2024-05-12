@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="widget widget-result-photos">
-    <div class="input-group drop-zone">
+    <div class="input-group drop-zone results-zone">
       <label for="gallery"></label>
       <div id="gallery" class="gallery-container">
         <!-- Images will be added here dynamically -->
@@ -37,6 +37,198 @@
   <div class="widget widget-remove-background">
     <button id="rmbg-button">Remove background</button>
   </div>
+  <div class="widget widget-summary">
+    <label for="price">Cena:</label>
+    <!-- Added price input -->
+    <input type="number" id="price" name="price" placeholder="0,00 zł" />
+
+    <button type="submit" class="btn-save-listing">Dodaj</button>
+    <!-- Changed text to "Dodaj" -->
+
+    <a>widget</a>
+  </div>
+  <div class="widget widget-form">
+    <label for="template">Szablon:</label>
+      <select id="template" name="template">
+        <option value="vinted">Vinted</option>
+        <option value="grailed">Grailed</option>
+      </select>
+    <form>
+      <!-- Improve form labeling and input structure -->
+      <label for="title">Tytuł:</label>
+      <!-- Changed label to Polish as per screenshot -->
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="np. Biały Sweter COS"
+      />
+
+      <label for="description">Opisz swój przedmiot:</label>
+      <!-- Updated label text -->
+      <textarea
+        id="description"
+        name="description"
+        placeholder="np. założone tylko kilka razy, rozmiar zgodny z metką"
+      ></textarea>
+
+      <label for="category">Kategoria:</label>
+      <select id="category" name="category" onchange="showAdditionalFields()">
+        <option value="">Wybierz kategorię</option>
+        <option value="top-garment">Odzież górna</option>
+        <option value="bottom-garment">Odzież dolna</option>
+        <option value="accesories">Akcesoria</option>
+      </select>
+
+      <!-- Kontenery na dodatkowe pola, które początkowo są ukryte -->
+      <div id="top-garment-fields" style="display: none">
+        <label for="top-size">Rozmiar:</label>
+        <select id="top-size" name="top-size">
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+        <div class="measurements-table">
+          <!-- Row 1 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="szerokosc">Szerokość:</label>
+              <input
+                type="number"
+                id="szerokosc"
+                name="szerokosc"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="dlugosc">Długość:</label>
+              <input
+                type="number"
+                id="dlugosc"
+                name="dlugosc"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="ramiona">Ramiona:</label>
+              <input
+                type="number"
+                id="ramiona"
+                name="ramiona"
+                placeholder="cm"
+              />
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="dlugosc-rekaw">Długość rękawa:</label>
+              <input
+                type="number"
+                id="dlugosc-rekaw"
+                name="dlugosc-rekaw"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+            </div>
+            <div class="table-cell">
+            </div>
+          </div>
+        </div>
+        <!-- Dodaj więcej pól dla tej kategorii -->
+      </div>
+
+      <div id="bottom-garment-fields" style="display: none">
+        <label for="bottom-size">Rozmiar spodni:</label>
+        <select id="bottom-size" name="bottom-size">
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <script>
+            for (let i = 26; i <= 44; i++) {
+              const option = document.createElement("option");
+              let sizeOption = "US " + i;
+              option.value = sizeOption;
+              option.text = sizeOption;
+              document.getElementById("pants-size").appendChild(option);
+            }
+          </script>
+        </select>
+        <div class="measurements-table">
+          <!-- Row 1 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="szerokosc-w-pasie">Szerokość w pasie:</label>
+              <input
+                type="number"
+                id="szerokosc-w-pasie"
+                name="szerokosc-w-pasie"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="dlugosc-wewnetrzna">Długość wewnętrzna:</label>
+              <input
+                type="number"
+                id="dlugosc-wewnetrzna"
+                name="dlugosc-wewnetrzna"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="szerokosc-w-nogawce">Szerokość w nogawce:</label>
+              <input
+                type="number"
+                id="szerokosc-w-nogawce"
+                name="szerokosc-w-nogawce"
+                placeholder="cm"
+              />
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="table-row">
+            <div class="table-cell">
+              <label for="dlugosc-calkowita">Szerokość całkowita:</label>
+              <input
+                type="number"
+                id="dlugosc-calkowita"
+                name="dlugosc-calkowita"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="szerokosc-w-udzie">Szerokość w udzie:</label>
+              <input
+                type="number"
+                id="szerokosc-w-udzie"
+                name="szerokosc-w-udzie"
+                placeholder="cm"
+              />
+            </div>
+            <div class="table-cell">
+              <label for="szerokosc-w-kolanie">Szerokość w kolanie:</label>
+              <input
+                type="number"
+                id="szerokosc-w-kolanie"
+                name="szerokosc-w-kolanie"
+                placeholder="cm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
   <script src="{% static 'hub/js/panel.js' %}"></script>
   <script src="{% static 'hub/js/inference.js' %}"></script>
   {% endblock %}

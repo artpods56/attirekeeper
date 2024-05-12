@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from hub.views import gallery, add, settings, panel
+from hub.views import gallery, add, settings, panel, get_fields
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gallery/', gallery, name='gallery'),
     path('add/', add, name='add'),
     path('settings/', settings, name='settings'),
-    path('panel/', panel, name='panel')
+    path('panel/', panel, name='panel'),
+    path('get_fields/<str:category>/', get_fields, name='get_fields'),
 ]

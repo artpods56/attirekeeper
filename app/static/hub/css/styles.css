@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f0f0f0;
@@ -7,7 +7,7 @@ body {
 
 .navbar {
   background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   padding: 1em 0;
@@ -31,7 +31,7 @@ body {
 }
 
 .nav-item::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -47,80 +47,11 @@ body {
   width: 100%;
 }
 
-</style>
-</head>
-<body>
-
-<div class="navbar">
-<a class="nav-item" href="#mail">Mail</a>
-<a class="nav-item" href="#contacts">Contacts</a>
-<a class="nav-item" href="#calendar">Calendar</a>
-</div>
-
-</body>
-</html>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Improved Layout with Content Container</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
-
-    .navbar {
-      background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: center;
-      padding: 1em 0;
-    }
-
-    .nav-item {
-      margin: 0 15px;
-      position: relative;
-      padding-bottom: 5px;
-      text-decoration: none;
-      color: #333333;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .nav-item:hover,
-    .nav-item:focus {
-      color: #0078d4;
-      cursor: pointer;
-    }
-
-    .nav-item::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0%;
-      height: 2px;
-      background-color: #0078d4;
-      transition: width 0.3s ease;
-      transform: translateX(-50%);
-    }
-
-    .nav-item:hover::after,
-    .nav-item:focus::after {
-      width: 100%;
-    }
-
-    .content {
-      max-width: 1600px;
-      margin: 40px auto;
-      padding: 20px;
-      display: block;
-    }
-
+.content {
+  max-width: 1600px;
+  margin: 40px auto;
+  padding: 20px;
+  display: block;
+}

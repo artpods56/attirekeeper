@@ -22,3 +22,52 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Template(models.Model):
+    name = models.TextField(max_length=100)
+    description = models.TextField(max_length=1200)
+    category = models.TextField(choices=[
+        (None, 'Wybierz kategorię'),
+        ('bottom_garment', 'Bottom Garment'),
+        ('top_garment', 'Top Garment'),
+        ('accessories', 'Accessories')
+    ])
+    
+    category = models.TextField(choices=[
+        (None, 'Wybierz stan'),
+        ('decent', 'Zadowalający'),
+        ('good', 'Dobry'),
+        ('very_good', 'Bardzo dobry'),
+        ('new', 'Nowy bez metek'),
+        ('new_with_tags', 'Nowy z metkami')
+    ])
+    size = models.TextField(choices=[
+        (None, 'Wybierz rozmiar'),
+        ('xxs', 'XXS'),
+        ('xs', 'XS'),
+        ('s', 'S'),
+        ('m', 'M'),
+        ('l', 'L'),
+        ('xl', 'XL'),
+        ('xxl', 'XXL'),
+        ('xxxl', 'XXXL')
+    ])
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+    
+class TopGarment(models.Model):
+    width = models.IntegerField()
+    length = models.IntegerField()
+    shoulder_width = models.IntegerField()
+    sleeve_length = models.IntegerField()
+    
+class BottomGarment(models.Model):
+    waist = models.IntegerField()
+    hip = models.IntegerField()
+    inseam = models.IntegerField()
+    outseam = models.IntegerField()
+    rise = models.IntegerField()
+    

@@ -1,92 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Layout</title>
-<style>
-  /* Your existing styles */
+{% extends "hub/base.html" %} {% load static %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'hub/css/settings.css' %}"
+/>
 
-  .widget {
-    /* Your existing styles for widget */
-    display: flex;
-    flex-direction: column; /* Align children vertically */
-  }
+{% endblock %} {% block title %} Home {% endblock %} {% block content %}
+<div class="content grid">
+  <div class="widget widget-controls">
+    <select name="template">
+      {% for template in templates %}
+      <option value="{{ template.id }}">{{ template.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="widget widget-form">
+    <form method="post">
+      <p>{{ form.name.label_tag }} {{ form.name }}</p>
+      <p>{{ form.category.label_tag }} {{ form.category }}</p>
+      <p>{{ form.description.label_tag }} {{ form.description }}</p>
 
-  .input-group {
-    margin-bottom: 10px; /* Space between input groups */
-  }
-
-  .input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px; /* Space between label and input */
-  }
-
-  .input-group input,
-  .input-group select {
-    width: 100%; /* Full width */
-    padding: 10px;
-    margin-bottom: 5px; /* Space between inputs */
-    border: 1px solid #ccc; /* Light grey border */
-    border-radius: 4px;
-  }
-
-  .input-group textarea {
-    width: 100%;
-    height: 100px; /* Adjust height as necessary */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical; /* Allow vertical resize */
-  }
-
-  .input-group input[type=file] {
-    border: none; /* No border for file input */
-  }
-
-  .submit-button {
-    padding: 10px 20px;
-    background-color: #0078d4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  /* Add further styling according to your needs */
-</style>
-</head>
-<body>
-
-<div class="content">
-  <div class="widget">
-    <div class="input-group">
-      <label for="image-upload">Add up to 20 pictures:</label>
-      <input type="file" id="image-upload" multiple>
-    </div>
-    <div class="input-group">
-      <label for="title">Title</label>
-      <input type="text" id="title" placeholder="e.g., White COS Sweater">
-    </div>
-    <div class="input-group">
-      <label for="description">Describe your item</label>
-      <textarea id="description" placeholder="e.g., worn only a few times, size as per tag"></textarea>
-    </div>
-    <div class="input-group">
-      <label for="category">Category</label>
-      <select id="category">
-        <option value="">Select category</option>
-        <!-- Add options here -->
+      <select id="fields" name="fields">
+        <!-- options will be added here dynamically -->
       </select>
+      <button type="button" id="markup-button">Dodaj znacznik</button>
+
+      <button type="submit">Create Template</button>
+    </form>
+  </div>
+  <div class="widget widget-preview">
+    <div class="preview-container">
+      <input type="text" value="Podgląd" id="preview">
     </div>
-    <div class="input-group">
-      <label for="price">Price</label>
-      <input type="text" id="price">
-    </div>
-    <button class="submit-button">Share your opinion</button>
   </div>
 </div>
-
-</body>
-</html>
+<script src="{% static 'hub/js/settings.js' %}"></script>
+{% endblock %}

@@ -46,7 +46,7 @@ services:
     networks:
       - backend
     depends_on:
-      - api
+      - postgres
 
   postgres:
     image: postgres:latest
@@ -65,7 +65,7 @@ services:
     networks:
       - backend
     depends_on:
-      - app
+      - api
 
   pgadmin:
     image: dpage/pgadmin4:latest
