@@ -11,10 +11,14 @@ then
     echo "PostgreSQL started"
 fi
 
+echo "Making migrations..."
+python manage.py makemigrations --noinput    
 python manage.py migrate --noinput
-python manage.py makemigrations --noinput        
+    
+echo "Collecting static files..."
 python manage.py collectstatic --no-input --clear    
 
+echo "Creating superuser..."
 python create_superuser.py
 
 exec "$@"

@@ -4,7 +4,7 @@ from .models import Template
 class TemplateForm(forms.ModelForm):
     class Meta:
         model = Template
-        fields = ('name', 'description', 'category',)
+        fields = ('name', 'description',)
         
     def __init__(self, *args, **kwargs):
         super(TemplateForm, self).__init__(*args, **kwargs)

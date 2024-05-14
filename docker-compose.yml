@@ -42,6 +42,9 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@domain.com
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SETTINGS_MODULE=app.settings
+      - DATABASE=postgres
+      - SQL_HOST=postgres
+      - SQL_PORT=5432
     restart: always
     networks:
       - backend
@@ -64,8 +67,6 @@ services:
         target: /var/lib/postgresql/data
     networks:
       - backend
-    depends_on:
-      - api
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -76,8 +77,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: root
       PGADMIN_LISTEN_PORT: 80
-    depends_on:
-      - postgres # Ensures pgAdmin starts after PostgreSQL
     restart: always
     networks:
       - backend
