@@ -9,16 +9,18 @@
 {% endblock %} {% block title %} Home {% endblock %} {% block content %}
 <div class="content grid">
   <div class="widget widget-controls">
-    <select name="template">
+    <select name="template-selector">
+      <option value="default">Select Template</option>
       {% for template in templates %}
-      <option value="{{ template.id }}">{{ template.name }}</option>
+      <option value="{{ template.name }}">{{ template.name }}</option>
       {% endfor %}
     </select>
   </div>
   <div class="widget widget-form">
     <form method="post">
-      <p>{{ form.name.label_tag }} {{ form.name }}</p>
-      <p>{{ form.category.label_tag }} {{ form.category }}</p>
+      {% csrf_token %}
+
+      <p>{{ form.name.errors }}{{ form.name.label_tag }} {{ form.name }}</p>
       <p>{{ form.description.label_tag }} {{ form.description }}</p>
 
       <select id="fields" name="fields">
@@ -31,7 +33,7 @@
   </div>
   <div class="widget widget-preview">
     <div class="preview-container">
-      <input type="text" value="Podgląd" id="preview">
+      <input type="text" value="Podgląd" id="preview" />
     </div>
   </div>
 </div>

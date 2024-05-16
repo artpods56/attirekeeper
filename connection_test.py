@@ -23,4 +23,4 @@ finally:
         connection.close()
         print("PostgreSQL connection is closed")
 
-#docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" docker_project-postgres-1
+#docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" postgres-database
