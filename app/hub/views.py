@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse, Http404
 from .models import Listing, Template, Measurements
-from .forms import TemplateForm
+from .forms import TemplateForm, ListingForm, PhotoForm, MeasurementsForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ValidationError
+from django.middleware.csrf import get_token
+import requests
 
 import logging
+import requests
 
 logger = logging.getLogger( __name__ )
 logger.setLevel(logging.DEBUG)
@@ -15,51 +18,59 @@ def add(request):
     return render(request, "hub/add.html")
 
 def gallery(request):
-    items = Listing.objects.all()  # gets all objects from your model
-    field_names = [field.name for field in Listing._meta.fields]
-    return render(request, 'hub/gallery.html', {'items': items, 'field_names': field_names})
 
-def settings(request):
-    logger.debug("Loading settings view.")
-    if request.method == 'POST':
-        form = TemplateForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data.get('name')
-            if Template.objects.filter(name=name).exists():
-                logger.error("Template with this name already exists.")
-                form.add_error('name', 'Template with this name already exists.')
-            else:
-                logger.info("Template created.")
-                form.save()
-                return redirect('settings')
-    else:
-        form = TemplateForm()
-    return render(request, 'hub/settings.html', {'form': form, 'templates' : Template.objects.all()})
+    return render(request, 'hub/gallery.html')
 
+def templates(request):
+    logger.debug("Loading templates view.")
+    form = TemplateForm()
+    return render(request, 'hub/templates.html', {'form': form, 'templates' : Template.objects.all()})
 
 def panel(request):
     logger.debug("Loading panel view.")
-    return render(request, 'hub/panel.html')
-
-
-
-def get_fields(request):
-    # if not request.is_ajax():
-    #     raise Http404
+    listing_form = ListingForm()
+    measurements_form = MeasurementsForm()
     
-    excluded_types = ['AutoField', 'ForeignKey', 'OneToOneField']
     
-    listing_fields = [field.name for field in Listing._meta.get_fields() 
-                      if field.get_internal_type() not in excluded_types]
-    
-    measurements_fields = [field.name for field in Measurements._meta.get_fields() 
-                           if field.get_internal_type() not in excluded_types]
-    
-    return JsonResponse(listing_fields + measurements_fields, safe=False)
+    photo_form = PhotoForm()
+    return render(request, 'hub/panel.html', {'listing_form': listing_form, 
+                                              'measurements_form': measurements_form, 
+                                              'photo_form': photo_form})
 
-def get_template(request, template_name):
-    if template_name == "":
-        raise Http404
+def upload_file(request):
+    if request.method == 'POST':
+        listing_form = ListingForm(request.POST)
+        measurements_form = MeasurementsForm(request.POST)
+        photo_form = PhotoForm(request.POST, request.FILES)
+        
+        if listing_form.is_valid() and measurements_form.is_valid() and photo_form.is_valid():
+            # Save the Measurements instance first
+            measurements_instance = measurements_form.save()
+
+            # Then save the Listing instance, attaching the Measurements instance
+            listing_instance = listing_form.save(commit=False)
+            listing_instance.measurements_id = measurements_instance
+            
+            listing_instance.save()
+            
+            # Finally, save the Photo instance, attaching the Listing instance
+            files = request.FILES.getlist('image')
+            logger.debug(files)
+            for f in files:
+                photo_instance = photo_form.save(commit=False)
+                photo_instance.listing_id = listing_instance
+                photo_instance.image = f
+                photo_instance.save()
+
+            
+            return redirect('upload_file')
     else:
-        template = Template.objects.get(name=template_name)
-        return JsonResponse({'name': template.name, 'description': template.description})
+        listing_form = ListingForm()
+        measurements_form = MeasurementsForm()
+        photo_form = PhotoForm()
+        
+    return render(request, 'hub/upload.html', {
+        'listing_form': listing_form, 
+        'measurements_form': measurements_form, 
+        'photo_form': photo_form
+    })

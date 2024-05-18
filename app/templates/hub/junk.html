@@ -320,3 +320,161 @@ function updateThumbnails() {
 
   </body>
 </html>
+
+
+
+
+<label for="category">Kategoria:</label>
+<select id="category" name="category" onchange="showAdditionalFields()">
+  <option value="">Wybierz kategorię</option>
+  <option value="top-garment">Odzież górna</option>
+  <option value="bottom-garment">Odzież dolna</option>
+  <option value="accesories">Akcesoria</option>
+</select>
+
+<!-- Kontenery na dodatkowe pola, które początkowo są ukryte -->
+<div id="top-garment-fields" style="display: none">
+  <label for="top-size">Rozmiar:</label>
+  <select id="top-size" name="top-size">
+    <option value="XS">XS</option>
+    <option value="S">S</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+    <option value="XL">XL</option>
+    <option value="XXL">XXL</option>
+  </select>
+  <div class="measurements-table">
+    <!-- Row 1 -->
+    <div class="table-row">
+      <div class="table-cell">
+        <label for="szerokosc">Szerokość:</label>
+        <input
+          type="number"
+          id="szerokosc"
+          name="szerokosc"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="dlugosc">Długość:</label>
+        <input
+          type="number"
+          id="dlugosc"
+          name="dlugosc"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="ramiona">Ramiona:</label>
+        <input
+          type="number"
+          id="ramiona"
+          name="ramiona"
+          placeholder="cm"
+        />
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="table-row">
+      <div class="table-cell">
+        <label for="dlugosc-rekaw">Długość rękawa:</label>
+        <input
+          type="number"
+          id="dlugosc-rekaw"
+          name="dlugosc-rekaw"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+      </div>
+      <div class="table-cell">
+      </div>
+    </div>
+  </div>
+  <!-- Dodaj więcej pól dla tej kategorii -->
+</div>
+
+<div id="bottom-garment-fields" style="display: none">
+  <label for="bottom-size">Rozmiar spodni:</label>
+  <select id="bottom-size" name="bottom-size">
+    <option value="XS">XS</option>
+    <option value="S">S</option>
+    <option value="M">M</option>
+    <option value="L">L</option>
+    <option value="XL">XL</option>
+    <option value="XXL">XXL</option>
+    <script>
+      for (let i = 26; i <= 44; i++) {
+        const option = document.createElement("option");
+        let sizeOption = "US " + i;
+        option.value = sizeOption;
+        option.text = sizeOption;
+        document.getElementById("pants-size").appendChild(option);
+      }
+    </script>
+  </select>
+  <div class="measurements-table">
+    <!-- Row 1 -->
+    <div class="table-row">
+      <div class="table-cell">
+        <label for="szerokosc-w-pasie">Szerokość w pasie:</label>
+        <input
+          type="number"
+          id="szerokosc-w-pasie"
+          name="szerokosc-w-pasie"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="dlugosc-wewnetrzna">Długość wewnętrzna:</label>
+        <input
+          type="number"
+          id="dlugosc-wewnetrzna"
+          name="dlugosc-wewnetrzna"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="szerokosc-w-nogawce">Szerokość w nogawce:</label>
+        <input
+          type="number"
+          id="szerokosc-w-nogawce"
+          name="szerokosc-w-nogawce"
+          placeholder="cm"
+        />
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="table-row">
+      <div class="table-cell">
+        <label for="dlugosc-calkowita">Szerokość całkowita:</label>
+        <input
+          type="number"
+          id="dlugosc-calkowita"
+          name="dlugosc-calkowita"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="szerokosc-w-udzie">Szerokość w udzie:</label>
+        <input
+          type="number"
+          id="szerokosc-w-udzie"
+          name="szerokosc-w-udzie"
+          placeholder="cm"
+        />
+      </div>
+      <div class="table-cell">
+        <label for="szerokosc-w-kolanie">Szerokość w kolanie:</label>
+        <input
+          type="number"
+          id="szerokosc-w-kolanie"
+          name="szerokosc-w-kolanie"
+          placeholder="cm"
+        />
+      </div>
+    </div>
+  </div>
+</div>

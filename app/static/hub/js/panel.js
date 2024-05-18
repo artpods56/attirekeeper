@@ -105,24 +105,21 @@ function updateThumbnails(dropZoneID) {
   return thumbnailsContainer;
 }
 
-
-
 function createThumbnail(file, dropZoneID, buttonID, maxImages) {
-  
-  
   const buttonInput = document.getElementById(buttonID);
 
   const reader = new FileReader();
 
   reader.onload = function (e) {
     thumbnailsContainer = document.getElementById(dropZoneID);
-    let imageCounter = thumbnailsContainer.querySelectorAll(".img-container").length;
+    let imageCounter =
+      thumbnailsContainer.querySelectorAll(".img-container").length;
     imageCounter++;
     if (imageCounter > maxImages) {
       return;
     }
-    console.log("debugging")
-    console.log("imageCounter: ", imageCounter)
+    console.log("debugging");
+    console.log("imageCounter: ", imageCounter);
     const imgContainer = document.createElement("div");
     imgContainer.style.position = "relative";
     imgContainer.style.display = "inline-block";
@@ -204,19 +201,41 @@ function handleFiles(files, dropZoneID, buttonID) {
   }
 }
 
-function showAdditionalFields() {
-  var category = document.getElementById("category").value;
+function setSelectorListener() {
+  console.log("category changed");
+  var category = document.getElementById("id_category").value;
   var topGarmentFields = document.getElementById("top-garment-fields");
   var bottomGarmentFields = document.getElementById("bottom-garment-fields");
 
   // Ukryj wszystkie pola
-  topGarmentFields.style.display = 'none';
-  bottomGarmentFields.style.display = 'none';
+  topGarmentFields.style.display = "none";
+  bottomGarmentFields.style.display = "none";
 
+  // topGarmentFields.style.display = 'block';
   // Wyświetl odpowiednie pola w zależności od wybranej kategorii
-  if (category === "top-garment") {
-    topGarmentFields.style.display = 'block';
-  } else if (category === "bottom-garment") {
-    bottomGarmentFields.style.display = 'block';
+  if (category === "top_garment") {
+    topGarmentFields.style.display = "block";
+  } else if (category === "bottom_garment") {
+    bottomGarmentFields.style.display = "block";
+  } else {
+    return;
   }
+}
+
+function toggleForm() {
+  document
+    .getElementById("id_category")
+    .addEventListener("change", setSelectorListener);
+  setSelectorListener();
+}
+
+toggleForm();
+
+function populateInput() {
+  const selectedImages = document.querySelectorAll(
+    ".img-container.selected img"
+  );
+  const imageData = Array.from(selectedImages).map((img) => img.src); // Get src if it's a data URL
+  document.getElementById("id_image").value = JSON.stringify(imageData);
+  console.log("imageData: ", imageData);
 }

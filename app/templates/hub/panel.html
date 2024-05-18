@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {% extends "hub/base.html" %} {% load static %} {% block extra_css %}
 <link
   rel="stylesheet"
@@ -9,7 +8,11 @@
 {% endblock %} {% block title %} Home {% endblock %} {% block content %}
 
 <div class="content grid">
+  
   <div class="widget widget-clothes-photos">
+    <form id="clothes-form" method="post" enctype="multipart/form-data" action="{% url 'create_listing' %}">
+      {% csrf_token %}
+  
     <label for="image-upload">Add up to 20 clothing pictures:</label>
     <div class="input-group drop-zone" id="clothes-drop-zone">
       <button class="file-input" id="clothes-file-input">
@@ -48,186 +51,79 @@
     <a>widget</a>
   </div>
   <div class="widget widget-form">
-    <label for="template">Szablon:</label>
-      <select id="template" name="template">
-        <option value="vinted">Vinted</option>
-        <option value="grailed">Grailed</option>
-      </select>
-    <form>
-      <!-- Improve form labeling and input structure -->
-      <label for="title">Tytuł:</label>
-      <!-- Changed label to Polish as per screenshot -->
-      <input
-        type="text"
-        id="title"
-        name="title"
-        placeholder="np. Biały Sweter COS"
-      />
 
-      <label for="description">Opisz swój przedmiot:</label>
-      <!-- Updated label text -->
-      <textarea
-        id="description"
-        name="description"
-        placeholder="np. założone tylko kilka razy, rozmiar zgodny z metką"
-      ></textarea>
+      <p>{{ photo_form }}</p>
 
-      <label for="category">Kategoria:</label>
-      <select id="category" name="category" onchange="showAdditionalFields()">
-        <option value="">Wybierz kategorię</option>
-        <option value="top-garment">Odzież górna</option>
-        <option value="bottom-garment">Odzież dolna</option>
-        <option value="accesories">Akcesoria</option>
-      </select>
+      {% for field in listing_form %}
+        <p>{{ field.errors }}{{ field.label_tag }} {{ field }}</p>
+      {% endfor %}
+    
+      <div class="measurements-table" id="bottom-garment-fields">
+      
+      <!-- Row 1 -->
+      <div class="table-row">
 
-      <!-- Kontenery na dodatkowe pola, które początkowo są ukryte -->
-      <div id="top-garment-fields" style="display: none">
-        <label for="top-size">Rozmiar:</label>
-        <select id="top-size" name="top-size">
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-        </select>
-        <div class="measurements-table">
-          <!-- Row 1 -->
-          <div class="table-row">
-            <div class="table-cell">
-              <label for="szerokosc">Szerokość:</label>
-              <input
-                type="number"
-                id="szerokosc"
-                name="szerokosc"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="dlugosc">Długość:</label>
-              <input
-                type="number"
-                id="dlugosc"
-                name="dlugosc"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="ramiona">Ramiona:</label>
-              <input
-                type="number"
-                id="ramiona"
-                name="ramiona"
-                placeholder="cm"
-              />
-            </div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="table-row">
-            <div class="table-cell">
-              <label for="dlugosc-rekaw">Długość rękawa:</label>
-              <input
-                type="number"
-                id="dlugosc-rekaw"
-                name="dlugosc-rekaw"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-            </div>
-            <div class="table-cell">
-            </div>
-          </div>
+        <div class="table-cell">
+        {{ measurements_form.length.errors }}
+        {{ measurements_form.length.label_tag }}
+        {{ measurements_form.length }}
         </div>
-        <!-- Dodaj więcej pól dla tej kategorii -->
+        <div class="table-cell">
+          {{ measurements_form.waist.errors }}
+          {{ measurements_form.waist.label_tag }}
+          {{ measurements_form.waist }}
+          </div>
       </div>
-
-      <div id="bottom-garment-fields" style="display: none">
-        <label for="bottom-size">Rozmiar spodni:</label>
-        <select id="bottom-size" name="bottom-size">
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-          <script>
-            for (let i = 26; i <= 44; i++) {
-              const option = document.createElement("option");
-              let sizeOption = "US " + i;
-              option.value = sizeOption;
-              option.text = sizeOption;
-              document.getElementById("pants-size").appendChild(option);
-            }
-          </script>
-        </select>
-        <div class="measurements-table">
-          <!-- Row 1 -->
-          <div class="table-row">
-            <div class="table-cell">
-              <label for="szerokosc-w-pasie">Szerokość w pasie:</label>
-              <input
-                type="number"
-                id="szerokosc-w-pasie"
-                name="szerokosc-w-pasie"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="dlugosc-wewnetrzna">Długość wewnętrzna:</label>
-              <input
-                type="number"
-                id="dlugosc-wewnetrzna"
-                name="dlugosc-wewnetrzna"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="szerokosc-w-nogawce">Szerokość w nogawce:</label>
-              <input
-                type="number"
-                id="szerokosc-w-nogawce"
-                name="szerokosc-w-nogawce"
-                placeholder="cm"
-              />
-            </div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="table-row">
-            <div class="table-cell">
-              <label for="dlugosc-calkowita">Szerokość całkowita:</label>
-              <input
-                type="number"
-                id="dlugosc-calkowita"
-                name="dlugosc-calkowita"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="szerokosc-w-udzie">Szerokość w udzie:</label>
-              <input
-                type="number"
-                id="szerokosc-w-udzie"
-                name="szerokosc-w-udzie"
-                placeholder="cm"
-              />
-            </div>
-            <div class="table-cell">
-              <label for="szerokosc-w-kolanie">Szerokość w kolanie:</label>
-              <input
-                type="number"
-                id="szerokosc-w-kolanie"
-                name="szerokosc-w-kolanie"
-                placeholder="cm"
-              />
-            </div>
-          </div>
+      <div class="table-row">
+        <div class="table-cell">
+        {{ measurements_form.hip.errors }}
+        {{ measurements_form.hip.label_tag }}
+        {{ measurements_form.hip }}
+        </div>
+        <div class="table-cell">
+        {{ measurements_form.inseam.errors }}
+        {{ measurements_form.inseam.label_tag }}
+        {{ measurements_form.inseam }}
         </div>
       </div>
-    </form>
+      
+      </div>
+      <div class="measurements-table" id="top-garment-fields">
+      
+
+      <div class="table-row">
+        <div class="table-cell">
+        {{ measurements_form.length.errors }}
+        {{ measurements_form.length.label_tag }}
+        {{ measurements_form.length }}
+        </div>
+        <div class="table-cell">
+        {{ measurements_form.width.errors }}
+        {{ measurements_form.width.label_tag }}
+        {{ measurements_form.width }}
+        </div>
+      </div>
+      
+
+      <div class="table-row">
+        <div class="table-cell">
+        {{ measurements_form.sleeve_length.errors }}
+        {{ measurements_form.sleeve_length.label_tag }}
+        {{ measurements_form.sleeve_length }}
+        </div>
+        <div class="table-cell">
+        {{ measurements_form.shoulder_width.errors }}
+        {{ measurements_form.shoulder_width.label_tag }}
+        {{ measurements_form.shoulder_width }}
+        </div>
+      </div>
+      
+      </div>
+      <button id="populate_input" onclick="populateInput()">Click me</button>
+      <button type="submit" class="btn-save-listing">Submit</button>
+      </form>
   </div>
+
 
   <script src="{% static 'hub/js/panel.js' %}"></script>
   <script src="{% static 'hub/js/inference.js' %}"></script>

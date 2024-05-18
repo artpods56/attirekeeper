@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "hub/base.html" %} {% block title %} Home {% endblock %} 
+{%block content %}
+<div class = "content">
+
+<body>
+<h1>Upload Files</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ photo_form }}
+    {{ listing_form}}
+    {{ measurements_form}}
+    <ul id="file-list"></ul>
+    <button type="submit">Upload</button>
+</form>
+<script>
+      function updateFileList() {
+        const input = document.getElementById('id_file');
+        const fileList = document.getElementById('file-list');
+
+        for (let i = 0; i < input.files.length; i++) {
+            const li = document.createElement('li');
+            li.textContent = input.files[i].name + " ";
+            
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = function() {
+                const dt = new DataTransfer();
+                for (let j = 0; j < input.files.length; j++) {
+                    if (j !== i) {
+                        dt.items.add(input.files[j]);
+                    }
+                }
+                input.files = dt.files;
+                updateFileList();
+            };
+            li.appendChild(removeButton);
+
+            fileList.appendChild(li);
+        }
+    }
+    document.getElementById('id_image').addEventListener('change', updateFileList);
+</script>
+</div>
+{% endblock %}

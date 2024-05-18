@@ -12,9 +12,9 @@
   </head>
   <body>
     <div class="navbar">
-      <a class="nav-item" href="#mail">Mail</a>
-      <a class="nav-item" href="#contacts">Contacts</a>
-      <a class="nav-item" href="#calendar">Calendar</a>
+      <a class="nav-item" href="{% url 'gallery' %}">Przedmioty</a>
+      <a class="nav-item" href="{% url 'panel' %}">Dodaj</a>
+      <a class="nav-item" href="{% url 'templates' %}">Szablony</a>
     </div>
     {% block content %}<!-- Page content   -->{% endblock %}
   </body>

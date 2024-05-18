@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from hub.views import gallery, add, settings, panel, get_fields, get_template
+from django.conf import settings
+from django.conf.urls.static import static
+from hub.views import gallery, add, templates, panel, upload_file
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gallery/', gallery, name='gallery'),
-    path('add/', add, name='add'),
-    path('settings/', settings, name='settings'),
+    path('templates/', templates, name='templates'),
     path('panel/', panel, name='panel'),
-    path('get_fields/', get_fields, name='get_fields'),
-    path('get_template/<str:template_name>/', get_template, name='create_template'),
+    path('upload/', upload_file, name='upload_file'),
     path('api/', include('api.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
