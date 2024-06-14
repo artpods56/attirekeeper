@@ -10,13 +10,11 @@ RUN apt-get update && apt-get install -y netcat-openbsd
 
 COPY . .
 
-ENV PYTHONPATH=/code:/code/api:/code/api/BiRefNet
-
 COPY ./entrypoint.sh /code/entrypoint.sh
 RUN chmod +x /code/entrypoint.sh
 
 RUN echo "Excute the entrypoint.sh script"
-ENTRYPOINT ["/code/entrypoint.sh"]
+ENTRYPOINT ["bash", "/code/entrypoint.sh"]
 
 EXPOSE 8001
 

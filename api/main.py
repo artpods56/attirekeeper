@@ -14,6 +14,8 @@ from inference import remove_background
 from config import Config
 
 
+app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Adjust in production
@@ -21,8 +23,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app = FastAPI()
 
 
 @app.on_event("startup")
