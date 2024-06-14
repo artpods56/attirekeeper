@@ -1,37 +1,42 @@
-from skimage import io
-import torch, os
-from PIL import Image
-from briarmbg import BriaRMBG
-from utilities import preprocess_image, postprocess_image
-from huggingface_hub import hf_hub_download
+from torchvision import transforms
+import torch
 
+class ImagePreprocessor():
+    def __init__(self, resolution=(1024, 1024)) -> None:
+        self.transform_image = transforms.Compose([
+            transforms.Resize(resolution),    # 1. keep consistent with the cv2.resize used in training 2. redundant with that in path_to_image()
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ])
 
-def remove_background(im_path):
+    def proc(self, image):
+        image = self.transform_image(image)
+        return image
 
-    im_path = f"{os.path.dirname(os.path.abspath(__file__))}/img_sample.jpeg"
+def tensor_to_pil(tenor_im):
+    im = tenor_im.cpu().clone()
+    im = im.squeeze(0)
+    tensor2pil = transforms.ToPILImage()
+    im = tensor2pil(im)
+    return im
 
-    net = BriaRMBG()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    net = BriaRMBG.from_pretrained("briaai/RMBG-1.4")
-    net.to(device)
-    net.eval()    
+def remove_background(model,image):
+    image_2 = image.copy()
+    original_shape = image.size
+    image_preprocessor = ImagePreprocessor()
+    
+    input_images = image_preprocessor.proc(image).unsqueeze(0).to('cuda')
+    og_image = image.resize((1024, 1024))
+    with torch.no_grad():
+        scaled_preds = model(input_images)[-1].sigmoid()
+    for idx_sample in range(scaled_preds.shape[0]):
+        res = torch.nn.functional.interpolate(
+            scaled_preds[idx_sample].unsqueeze(0),
+            size=og_image.size,
+            mode='bilinear',
+            align_corners=True
+        )
+    output=tensor_to_pil(res)   # test set dir + file name
 
-    # prepare input
-    model_input_size = [1024,1024]
-    orig_im = io.imread(im_path)
-    orig_im_size = orig_im.shape[0:2]
-    image = preprocess_image(orig_im, model_input_size).to(device)
-
-    # inference 
-    result=net(image)
-
-    # post process
-    result_image = postprocess_image(result[0][0], orig_im_size)
-
-    # save result
-    pil_im = Image.fromarray(result_image)
-    no_bg_image = Image.new("RGBA", pil_im.size, (0,0,0,0))
-    orig_image = Image.open(im_path)
-    no_bg_image.paste(orig_image, mask=pil_im)
-    no_bg_image.save("example_image_no_bg.png")
-
+    image_2.putalpha(output.resize(original_shape).convert('L'))
+    return image_2
