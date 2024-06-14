@@ -1,0 +1,41 @@
+{% load crispy_forms_tags %}
+<table id="top-garment-measurements" class="table table-bordered">
+    <tbody>
+        <tr>
+            <td>
+                {{ measurements_form.length | as_crispy_field }}
+            </td>
+            <td>
+                {{ measurements_form.width | as_crispy_field }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ measurements_form.shoulder_width | as_crispy_field }}
+            </td>
+            <td>
+                {{ measurements_form.sleeve_length | as_crispy_field }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table id="bottom-garment-measurements" class="table table-bordered">
+    <tbody>
+        <tr>
+            <td>
+                {{ measurements_form.length | as_crispy_field }}
+            </td>
+            <td>
+                {{ measurements_form.waist | as_crispy_field }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ measurements_form.hip | as_crispy_field }}
+            </td>
+            <td>
+                {{ measurements_form.inseam | as_crispy_field }}
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,45 +1,211 @@
 <!DOCTYPE html>
-{% extends "hub/base.html" %} {% block title %} Home {% endblock %} 
+{% extends "hub/base.html" %} {% block title %} Home {% endblock %} {% load static %} 
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'hub/css/upload.css' %}" />
+{% endblock %}
 {%block content %}
-<div class = "content">
-
-<body>
-<h1>Upload Files</h1>
-<form method="post" enctype="multipart/form-data">
+<div class = "container">
+<form method="post" id="listig-form" enctype="multipart/form-data">
     {% csrf_token %}
+    <div role="group">
+        {{ listing_form.category.errors }}{{ listing_form.category }}
+        {{ listing_form.size.errors }}{{ listing_form.size }}
+        {{ listing_form.condition.errors }}{{ listing_form.condition }}
+    </div>
+    <div class="grid">
+        <div>
+            <p>{{ listing_form.title.errors }}{{ listing_form.title }}</p>
+
+            <p>{{ listing_form.flaws.errors }}{{ listing_form.flaws }}</p>
+            <p>{{ listing_form.brand.errors }}{{ listing_form.brand }}</p>
+            <p>{{ listing_form.price.errors }}{{ listing_form.price }}</p>
+
+            
+        </div>
+        <div>
+            <p>{{ listing_form.description.errors }}{{ listing_form.description }}</p>
+        </div>
+    </div>
+    <table id="top-garments">
+        <thead>
+            <tr>
+                <th scope="col">Length</th>
+                <th scope="col">Width</th>
+                <th scope="col">Shoulder Width</th>
+                <th scope="col">Sleeve Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ measurements_form.length.errors }}{{ measurements_form.length }}</td>
+                <td>{{ measurements_form.width.errors }}{{ measurements_form.width }}</td>
+                <td>{{ measurements_form.hip.errors }}{{ measurements_form.hip }}</td>
+                <td>{{ measurements_form.inseam.errors }}{{ measurements_form.inseam }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="bottom-garments">
+        <thead>
+            <tr>
+                <th scope="col">Length</th>
+                <th scope="col">Waist</th>
+                <th scope="col">Hip</th>
+                <th scope="col">Inseam</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ measurements_form.length.errors }}{{ measurements_form.length }}</td>
+                <td>{{ measurements_form.waist.errors }}{{ measurements_form.waist }}</td>
+                <td>{{ measurements_form.hip.errors }}{{ measurements_form.hip }}</td>
+                <td>{{ measurements_form.inseam.errors }}{{ measurements_form.inseam }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Upload photos</h2>
+    <div class="gallery-image">
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250?image=444" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Library</p>
+              <p class="opacity-low">Architect Design</p>
+            </div>
+          </div> 
+        </div>
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250/?image=232" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Night Sky</p>
+              <p class="opacity-low">Cinematic</p>
+            </div>
+          </div>
+        </div>
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250/?image=431" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Tea Talk</p>
+              <p class="opacity-low">Composite</p>
+            </div>
+          </div>
+        </div>
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250?image=474" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Road</p>
+              <p class="opacity-low">Landscape</p>
+            </div>
+          </div> 
+        </div>
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250?image=344" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Sea</p>
+              <p class="opacity-low">Cityscape</p>
+            </div>
+          </div> 
+        </div>
+        <div class="img-box">
+          <img src="https://picsum.photos/350/250?image=494" alt="" />
+          <div class="transparent-box">
+            <div class="caption">
+              <p>Vintage</p>
+              <p class="opacity-low">Cinematic</p>
+            </div>
+          </div> 
+        </div>
+      </div>
     {{ photo_form }}
-    {{ listing_form}}
-    {{ measurements_form}}
-    <ul id="file-list"></ul>
     <button type="submit">Upload</button>
 </form>
 <script>
-      function updateFileList() {
-        const input = document.getElementById('id_file');
-        const fileList = document.getElementById('file-list');
+    let selectedFiles = [];
 
-        for (let i = 0; i < input.files.length; i++) {
-            const li = document.createElement('li');
-            li.textContent = input.files[i].name + " ";
-            
+    document.getElementById('id_image').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+
+        // Append new files to the existing selectedFiles array
+        selectedFiles = selectedFiles.concat(newFiles);
+
+        const fileDisplayArea = document.getElementById('file-list');
+        fileDisplayArea.innerHTML = ''; // Clear the previous list
+
+        selectedFiles.forEach((file, index) => {
+            const listItem = document.createElement('div');
+            listItem.textContent = file.name;
+
+            // Optionally add a remove button
             const removeButton = document.createElement('button');
             removeButton.textContent = 'Remove';
-            removeButton.onclick = function() {
-                const dt = new DataTransfer();
-                for (let j = 0; j < input.files.length; j++) {
-                    if (j !== i) {
-                        dt.items.add(input.files[j]);
-                    }
-                }
-                input.files = dt.files;
-                updateFileList();
-            };
-            li.appendChild(removeButton);
+            removeButton.addEventListener('click', function() {
+                selectedFiles.splice(index, 1);
+                updateFileDisplay();
+            });
 
-            fileList.appendChild(li);
-        }
+            listItem.appendChild(removeButton);
+            fileDisplayArea.appendChild(listItem);
+        });
+
+        // Clear the file input to allow adding the same file again if needed
+    });
+
+    function updateFileDisplay() {
+        const fileDisplayArea = document.getElementById('file-list');
+        fileDisplayArea.innerHTML = ''; // Clear the previous list
+
+        selectedFiles.forEach((file, index) => {
+            const listItem = document.createElement('div');
+            listItem.textContent = file.name;
+
+            // Optionally add a remove button
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function() {
+                selectedFiles.splice(index, 1);
+                updateFileDisplay();
+            });
+
+            listItem.appendChild(removeButton);
+            fileDisplayArea.appendChild(listItem);
+        });
     }
-    document.getElementById('id_image').addEventListener('change', updateFileList);
+
+    document.getElementById('listig-form').addEventListener('submit', function(event) {
+            const formData = new FormData(this);
+
+            // Clear the existing files input
+            formData.delete('image');
+
+            // Append all selected files to the form data
+            selectedFiles.forEach((file, index) => {
+                formData.append('image', file);
+            });
+
+            // Submit the form using AJAX to include all selected files
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', this.action, true);
+            xhr.setRequestHeader('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Handle success
+                    alert('Files uploaded successfully');
+                } else {
+                    // Handle error
+                    alert('An error occurred while uploading files');
+                }
+            };
+
+            xhr.send(formData);
+
+            // Prevent the default form submission
+            event.preventDefault();
+        });
 </script>
+<script src="{% static 'hub/js/upload.js' %}"></script>
 </div>
 {% endblock %}

@@ -3,7 +3,15 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 import os
 
-class Measurements(models.Model):
+class Brand(models.Model):
+    brand_id = models.AutoField(primary_key=True)
+    name = models.TextField()
+
+
+    def __str__(self):
+        return self.name
+    
+class Measurement(models.Model):
     measurements_id = models.AutoField(primary_key=True)
     width = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     length = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
@@ -16,41 +24,50 @@ class Measurements(models.Model):
 
 
 class Listing(models.Model):
+        
     listing_id = models.AutoField(primary_key=True)
-    title = models.TextField()
+    title = models.CharField()
     description = models.TextField()
-    size = models.TextField(choices=[
-        (None, 'Wybierz rozmiar'),
-        ('XXS', 'XXS'),
-        ('XS', 'XS'),
-        ('S', 'S'),
-        ('M', 'M'),
-        ('L', 'L'),
-        ('XL', 'XL'),
-        ('XXL', 'XXL'),
-        ('XXXL', 'XXXL')]
-    )
-    flaws = models.TextField(blank=True)
-    brand = models.TextField()
+    
+    default_size_choice = [(None, 'Not selected')]
+    top_garment_sizes = [
+        ('xxs', 'XXS'),
+        ('xs', 'XS'),
+        ('s', 'S'),
+        ('m', 'M'),
+        ('l', 'L'),
+        ('xl', 'XL'),
+        ('xxl', 'XXL'),
+        ('xxxl', 'XXXL')]
+    
+    bottom_garment_sizes = [(f'us{x}', f'US {x}') for x in range(26,44)]
+    
+    size_choices = default_size_choice + top_garment_sizes + bottom_garment_sizes
+    
+    size_choices_map = {option[0]:'top_garment' for option in top_garment_sizes} | {option[0]:'bottom_garment' for option in bottom_garment_sizes}
+    
+    size = models.CharField(choices=size_choices, default=None)
+    flaws = models.CharField(blank=True)
+    brand = models.ForeignKey(Brand, null=True, blank=True, on_delete=models.SET_NULL)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    condition = models.TextField(choices=[
-        (None, 'Wybierz stan'),
-        ('decent', 'Zadowalający'),
-        ('good', 'Dobry'),
-        ('very_good', 'Bardzo dobry'),
-        ('new', 'Nowy bez metek'),
-        ('new_with_tags', 'Nowy z metkami')
+    condition = models.CharField(choices=[
+        (None, 'Not selected'),
+        ('decent', 'Decent'),
+        ('good', 'Good'),
+        ('very_good', 'Very good'),
+        ('new_without_tags', 'New without tags'),
+        ('new_with_tags', 'New with tags')
     ], default=None)
     
-    category = models.TextField(choices=[
-        (None, 'Wybierz kategorię'),
+    category = models.CharField(choices=[
+        (None, 'Not selected'),
         ('bottom_garment', 'Bottom Garment'),
         ('top_garment', 'Top Garment'),
         ('accessories', 'Accessories')
     ], default=None)
     
-    measurements_id = models.ForeignKey(Measurements, on_delete=models.CASCADE)
+    measurements_id = models.ForeignKey(Measurement, on_delete=models.CASCADE)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -65,18 +82,13 @@ class Photo(models.Model):
     photo_id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='listing_photos/')
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    
-    # def delete(self, *args, **kwargs):
-    #     self.image.delete()
-    #     super(Photo, self).delete(*args, **kwargs)
-                       
-                       
+     
     def __str__(self):
         return self.image.name
 
 class Template(models.Model):
     template_id = models.AutoField(primary_key=True)
-    name = models.TextField(max_length=200)
+    name = models.CharField()
     description = models.TextField(max_length=1200)
     
     def __str__(self):

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.apps import apps
 import logging
 from hub.forms import TemplateForm
-from hub.models import Template
+from hub.models import Template, Brand
 
 
 logger = logging.getLogger( __name__ )
@@ -73,3 +73,10 @@ def create_listing(request):
     else:
         logger.error("Request is not POST.")
         return redirect('gallery')
+    
+def brand_autocomplete(request):
+    if 'term' in request.GET:
+        qs = Brand.objects.filter(name__icontains=request.GET.get('term'))
+        names = list(qs.values_list('name', flat=True))
+        return JsonResponse(names, safe=False)
+    return JsonResponse([], safe=False)

@@ -1,175 +1,23 @@
-.grid {
-  display: grid;
-  gap: 20px;
-
-  grid-template-areas:
-    "A A A A   A A A C C C C C C"
-    "A A A A   A A A C C C C C C"
-    "B B B B   B B B C C C C C C"
-    "B B B B   B B B C C C C C C"
-    "F F F F   F F F D D D D D D"
-    "F F F F   F F F R R R R R R"
-    "F F F F   F F F R R R R R R"
-    "F F F F   F F F R R R R R R";
+/* Custom styles for select inputs */
+.form-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNjY2IiBkPSJNOC0uMDEybDQuODQzIDQuODQzLTIuMTg1IDIuMTg0TDggMi4zNzJMMTIuMzgxIDcuMzcxTDggMTEuMzgxTDIuMzgyIDcuMzcxbDIuMTg0LTIuMTg0TDAgOC4xOTguMDEyIDh6Ii8+PC9zdmc+) no-repeat right 0.75rem center/8px 10px;
+  appearance: none;
 }
 
-.widget-clothes-photos {
-  grid-area: A;
-}
-.widget-background-photos {
-  grid-area: B;
-}
-.widget-result-photos {
-  grid-area: C;
-}
-.widget-remove-background {
-  grid-area: D;
-}
-.widget-empty {
-  grid-area: E;
+/* Additional custom styles for form elements */
+.form-group {
+  margin-bottom: 1rem;
 }
 
-.widget-summary {
-  grid-area: R;
-}
-.widget-form {
-  grid-area: F;
-}
-/* Ensure all form elements including inputs, textarea, and select boxes do not exceed their parent container's width */
-.widget input[type="text"],
-.widget input[type="number"],
-.widget select {
-  box-sizing: border-box; /* Include padding and border in the element's width */
-  width: 100%; /* Use full width of the parent container */
-  padding: 8px; /* Provide padding for content inside the elements */
-  margin-top: 5px; /* Space between label and input */
-  margin-bottom: 15px; /* Space between inputs */
-  border: 1px solid #ccc; /* Standard border for visibility and design */
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
 }
 
-.widget-form button:hover {
-  background-color: #45a049; /* Slightly darker green on hover for feedback */
-}
-
-.widget {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.img-remove-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  border: none;
-  background: rgb(236, 91, 91);
-  color: black;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  user-select: none;
-  transition: all 0.3s ease-in-out;
-}
-
-.img-remove-button:hover {
-  background: rgb(245, 80, 80);
-  transition: all 0.3s ease-in-out;
-  transform: scale(1.05);
-}
-
-.drop-zone {
-  border: 2px dashed #d6d6d6;
-  border-radius: 10px;
-  padding: 20px;
-  color: #cccccc;
-  min-height: 100px;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-.drop-zone:hover {
-  background-color: #f8f8f8;
-}
-
-.file-input {
-  padding: 10px 20px;
-  background-color: #337ab7;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  height: 47.8px;
-  align-self: center;
-}
-
-.input-group {
-  margin: 20px;
-}
-.input-group label {
-  display: block;
-  color: #666;
-  margin-bottom: 5px;
-}
-.input-group input,
-.input-group textarea,
-.input-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-/* .input-group button:hover {
-  background-color: #4b9ce2;
-} */
-
-.img-container {
-  transition: all 0.3s ease-in-out;
-}
-
-.selected {
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  transform: scale(1.05);
-  transition: all 0.3s ease-in-out;
-}
-
-.measurements-table {
-  display: flex;
-  flex-direction: column;
-  width: 100%; /* Adjust width as necessary */
-}
-
-.table-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.table-cell {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 5px; /* Spacing between cells */
-}
-
-input[type="number"] {
-  width: 100%; /* Full width of cell */
-  padding: 8px; /* Padding inside input */
-  margin-top: 5px; /* Space after label */
-}
-
-.widget-form textarea {
-  width: 100%;
-  height: 20px;
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
 }

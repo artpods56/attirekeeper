@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Pico.css Example</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}" >
+    <link rel="stylesheet" href="{% static 'hub/css/pico.min.css' %}" />
+</head>
+<body>
+
+    <!-- Header with navigation -->
+    <header class="container-fluid">
+        <nav class="container">
+            <ul>
+                <li><strong><a href="#">Pico.css Example</a></strong></li>
+            </ul>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="container">
+        <h1>Welcome to Pico.css</h1>
+        <p>This is a more advanced example of a webpage using Pico.css, showcasing various components and styles.</p>
+
+        <!-- Grid layout -->
+        <div class="grid">
+            <article>
+                <h2>Responsive Grid</h2>
+                <p>Pico.css provides a flexible and responsive grid system.</p>
+            </article>
+            <article>
+                <h2>Modern Design</h2>
+                <p>It offers a clean and modern design with minimal effort.</p>
+            </article>
+            <article>
+                <h2>Lightweight</h2>
+                <p>Pico.css is lightweight, ensuring fast load times.</p>
+            </article>
+        </div>
+
+        <!-- Form example -->
+        <section>
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name">
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your email">
+                
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Your message"></textarea>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+
+        <!-- Table example -->
+        <section>
+            <h2>Pricing Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plan</th>
+                        <th>Price</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic</td>
+                        <td>$10/month</td>
+                        <td>Access to basic features</td>
+                    </tr>
+                    <tr>
+                        <td>Pro</td>
+                        <td>$20/month</td>
+                        <td>Access to all features</td>
+                    </tr>
+                    <tr>
+                        <td>Enterprise</td>
+                        <td>$50/month</td>
+                        <td>Dedicated support and custom features</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Card example -->
+        <section>
+            <h2>Feature Cards</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>Feature One</h3>
+                    <p>Detailed description of feature one.</p>
+                </article>
+                <article class="card">
+                    <h3>Feature Two</h3>
+                    <p>Detailed description of feature two.</p>
+                </article>
+                <article class="card">
+                    <h3>Feature Three</h3>
+                    <p>Detailed description of feature three.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="container-fluid">
+            <nav class="container">
+                <ul>
+                    <li>&copy; 2024 Pico.css Example</li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                </ul>
+            </nav>
+        </footer>
+    </main>
+</body>
+</html>

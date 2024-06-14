@@ -1,131 +1,30 @@
-{% extends "hub/base.html" %} {% load static %} {% block extra_css %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'hub/css/panel.css' %}"
-/>
+{% extends "hub/base.html" %}
 
-{% endblock %} {% block title %} Home {% endblock %} {% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_css %}
 
-<div class="content grid">
-  
-  <div class="widget widget-clothes-photos">
-    <form id="clothes-form" method="post" enctype="multipart/form-data" action="{% url 'create_listing' %}">
-      {% csrf_token %}
-  
-    <label for="image-upload">Add up to 20 clothing pictures:</label>
-    <div class="input-group drop-zone" id="clothes-drop-zone">
-      <button class="file-input" id="clothes-file-input">
-        + Dodaj zdjęcia
-      </button>
+{% endblock %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="container my-4" id="listing-form">
+    <div class="p-3 mb-3" style="min-height: 450px;">
+        {% csrf_token %}
+        {% crispy listing_form %}
     </div>
-  </div>
-
-  <div class="widget widget-background-photos">
-    <label for="image-upload">Add background pictures:</label>
-    <div class="input-group drop-zone" id="background-drop-zone">
-      <button class="file-input" id="background-file-input">
-        + Dodaj zdjęcia
-      </button>
+    <div class="p-3 mb-3">
+        {% include 'hub/components/gallery.html' %}
     </div>
-  </div>
-  <div class="widget widget-result-photos">
-    <div class="input-group drop-zone results-zone">
-      <label for="gallery"></label>
-      <div id="gallery" class="gallery-container">
-        <!-- Images will be added here dynamically -->
-      </div>
+    <div class="p-3 mb-3">
+        
     </div>
-  </div>
-  <div class="widget widget-remove-background">
-    <button id="rmbg-button">Remove background</button>
-  </div>
-  <div class="widget widget-summary">
-    <label for="price">Cena:</label>
-    <!-- Added price input -->
-    <input type="number" id="price" name="price" placeholder="0,00 zł" />
-
-    <button type="submit" class="btn-save-listing">Dodaj</button>
-    <!-- Changed text to "Dodaj" -->
-
-    <a>widget</a>
-  </div>
-  <div class="widget widget-form">
-
-      <p>{{ photo_form }}</p>
-
-      {% for field in listing_form %}
-        <p>{{ field.errors }}{{ field.label_tag }} {{ field }}</p>
-      {% endfor %}
-    
-      <div class="measurements-table" id="bottom-garment-fields">
-      
-      <!-- Row 1 -->
-      <div class="table-row">
-
-        <div class="table-cell">
-        {{ measurements_form.length.errors }}
-        {{ measurements_form.length.label_tag }}
-        {{ measurements_form.length }}
-        </div>
-        <div class="table-cell">
-          {{ measurements_form.waist.errors }}
-          {{ measurements_form.waist.label_tag }}
-          {{ measurements_form.waist }}
-          </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-        {{ measurements_form.hip.errors }}
-        {{ measurements_form.hip.label_tag }}
-        {{ measurements_form.hip }}
-        </div>
-        <div class="table-cell">
-        {{ measurements_form.inseam.errors }}
-        {{ measurements_form.inseam.label_tag }}
-        {{ measurements_form.inseam }}
-        </div>
-      </div>
-      
-      </div>
-      <div class="measurements-table" id="top-garment-fields">
-      
-
-      <div class="table-row">
-        <div class="table-cell">
-        {{ measurements_form.length.errors }}
-        {{ measurements_form.length.label_tag }}
-        {{ measurements_form.length }}
-        </div>
-        <div class="table-cell">
-        {{ measurements_form.width.errors }}
-        {{ measurements_form.width.label_tag }}
-        {{ measurements_form.width }}
-        </div>
-      </div>
-      
-
-      <div class="table-row">
-        <div class="table-cell">
-        {{ measurements_form.sleeve_length.errors }}
-        {{ measurements_form.sleeve_length.label_tag }}
-        {{ measurements_form.sleeve_length }}
-        </div>
-        <div class="table-cell">
-        {{ measurements_form.shoulder_width.errors }}
-        {{ measurements_form.shoulder_width.label_tag }}
-        {{ measurements_form.shoulder_width }}
-        </div>
-      </div>
-      
-      </div>
-      <button id="populate_input" onclick="populateInput()">Click me</button>
-      <button type="submit" class="btn-save-listing">Submit</button>
-      </form>
-  </div>
-
-
-  <script src="{% static 'hub/js/panel.js' %}"></script>
-  <script src="{% static 'hub/js/inference.js' %}"></script>
-  {% endblock %}
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui/1.12.1/jquery-ui.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script type="module" src="{% static 'hub/js/pages/panel2.js' %}"></script>
+{% endblock %}

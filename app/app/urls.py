@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hub.views import gallery, add, templates, panel, upload_file
+from hub.views import gallery, add, templates, panel, upload_file, materials
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('panel/', panel, name='panel'),
     path('upload/', upload_file, name='upload_file'),
     path('api/', include('api.urls')),
+    path('materials/', materials, name='materials'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

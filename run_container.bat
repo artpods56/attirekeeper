@@ -1,5 +1,5 @@
 @echo off
-CALL C:\Users\artpo\anaconda3\Scripts\activate.bat django_demo
+@REM CALL C:\Users\artpo\anaconda3\Scripts\activate.bat django_demo
 
 echo Starting Docker Compose...
 docker-compose up --build -d
@@ -17,7 +17,7 @@ echo PostgreSQL database is running.
 echo PostgreSQL database running on address:
 docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" postgres-database
 
-CALL conda deactivate
+@REM CALL conda deactivate
 
 echo Press any key to close...
 pause>nul

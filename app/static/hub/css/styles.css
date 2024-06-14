@@ -1,57 +1,7 @@
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
+.asteriskField {
+  display: none;
 }
 
-.navbar {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  padding: 1em 0;
-}
-
-.nav-item {
-  margin: 0 15px;
-  position: relative;
-  padding-bottom: 5px;
-  text-decoration: none;
-  color: #333333;
-  text-transform: uppercase;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.nav-item:hover,
-.nav-item:focus {
-  color: #0078d4;
-  cursor: pointer;
-}
-
-.nav-item::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0%;
-  height: 2px;
-  background-color: #0078d4;
-  transition: width 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.nav-item:hover::after,
-.nav-item:focus::after {
-  width: 100%;
-}
-
-
-
-.content {
-  max-width: 1600px;
-  margin: 40px auto;
-  padding: 20px;
-  display: block;
+.custom-textarea {
+  height: auto !important;  /* This will allow the textarea to respect the rows attribute */
 }

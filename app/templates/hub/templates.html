@@ -1,37 +1,55 @@
-{% extends "hub/base.html" %} {% load static %} {% block extra_css %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'hub/css/settings.css' %}"
-/>
-
-{% endblock %} {% block title %} Home {% endblock %} {% block content %}
-<div class="content grid">
-  <div class="widget widget-controls">
-    <select id="template-selector">
-      <option value="new">New template</option>
-      {% for template in templates %}
-      <option value="{{ template.name }}">{{ template.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="widget widget-form">
-    <form method="post">
-      {% csrf_token %}
-      <p>{{ form.name.errors }}{{ form.name.label_tag }} {{ form.name }}</p>
-      <p>{{ form.description.label_tag }} {{ form.description }}</p>
-
-      <select id="fields" name="fields">
-        <!-- options will be added here dynamically -->
-      </select>
-      <button type="button" id="markup-button">Dodaj Znacznik</button>
-      <button type="button" id="delete-button">Usuń Szablon</button>
-      <button type="submit">Dodaj Szablon</button>
-    </form>
-  </div>
-  <div class="widget widget-preview">
-    <div class="preview-container">
-      <input type="text" value="Podgląd" id="preview" disabled/>
+{% extends "hub/base.html" %} 
+{% load static %} 
+{% block title %} Home {% endblock %} 
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Template Settings</h5>
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="template-selector">Select Template:</label>
+              <select id="template-selector" class="form-control">
+                <option value="new">New template</option>
+                {% for template in templates %}
+                <option value="{{ template.name }}">{{ template.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" class="form-control" />
+              {{ form.name.errors }}
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea id="description" name="description" class="form-control"></textarea>
+            </div>
+            <fieldset class="form-group">
+              <legend>Fields:</legend>
+              <select id="fields" name="fields" class="form-control">
+                <!-- options will be added here dynamically -->
+              </select>
+              <button type="button" id="markup-button" class="btn btn-primary">Add Field</button>
+            </fieldset>
+            <div class="form-group">
+              <button type="button" id="delete-button" class="btn btn-danger">Delete Template</button>
+              <button type="submit" class="btn btn-success">Save Template</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Preview</h5>
+          <input type="text" value="Preview" id="preview" disabled class="form-control" />
+        </div>
+      </div>
     </div>
   </div>
 </div>

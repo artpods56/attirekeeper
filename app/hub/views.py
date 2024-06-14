@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse, Http404
-from .models import Listing, Template, Measurements
+from .models import Listing, Template, Measurement, Photo, Brand
 from .forms import TemplateForm, ListingForm, PhotoForm, MeasurementsForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ValidationError
@@ -12,7 +12,7 @@ import requests
 
 logger = logging.getLogger( __name__ )
 logger.setLevel(logging.DEBUG)
-logger.info("Loaded logger")
+logger.info("Loaded views logger")
 
 def add(request):
     return render(request, "hub/add.html")
@@ -30,47 +30,70 @@ def panel(request):
     logger.debug("Loading panel view.")
     listing_form = ListingForm()
     measurements_form = MeasurementsForm()
-    
+    logger.debug('Dominik jest giga koksem!')
     
     photo_form = PhotoForm()
     return render(request, 'hub/panel.html', {'listing_form': listing_form, 
                                               'measurements_form': measurements_form, 
                                               'photo_form': photo_form})
 
-def upload_file(request):
+def materials(request):
+    return render(request, 'hub/materials.html')
+
+def upload(request):
     if request.method == 'POST':
+        form = UploadFiles(request.POST, request.FILES)
+        if form.is_valid():
+            files = []
+            if 'file_path' in request.FILES:
+                for file in request.FILES.getlist('file_path'):
+                    files.append(FileList(file_path=file))
+            # print(len(files))
+            if len(files) > 0:
+                try:
+                    FileList.objects.bulk_create(files)
+                    messages.success(request, "File(s) has been uploaded successfully.")
+                except Exception as ex:
+                    messages.error(request, ex)
+        else:
+            messages.error(request, 'Form data is invalid')
+ 
+    return redirect('home')
+
+def upload_file(request):
+    logger.debug("View received a request")
+    if request.method == 'POST':
+        logger.debug("Got a POST request")
         listing_form = ListingForm(request.POST)
         measurements_form = MeasurementsForm(request.POST)
         photo_form = PhotoForm(request.POST, request.FILES)
-        
+
+        for form in [listing_form, measurements_form, photo_form]:
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    logger.debug(f"{key}: {value}")
+            else:
+                logger.debug(f"{form} is not valid")
+
         if listing_form.is_valid() and measurements_form.is_valid() and photo_form.is_valid():
-            # Save the Measurements instance first
-            measurements_instance = measurements_form.save()
+            listing = listing_form.save(commit=False)
+            measurements = measurements_form.save()
+            listing.measurements_id = measurements
+            listing.save()
 
-            # Then save the Listing instance, attaching the Measurements instance
-            listing_instance = listing_form.save(commit=False)
-            listing_instance.measurements_id = measurements_instance
-            
-            listing_instance.save()
-            
-            # Finally, save the Photo instance, attaching the Listing instance
-            files = request.FILES.getlist('image')
-            logger.debug(files)
-            for f in files:
-                photo_instance = photo_form.save(commit=False)
-                photo_instance.listing_id = listing_instance
-                photo_instance.image = f
-                photo_instance.save()
+            for file in request.FILES.getlist('image'):
+                photo = Photo(listing_id=listing, image=file)
+                photo.save()
 
-            
-            return redirect('upload_file')
+            return redirect('upload_file')  # Replace with your success URL
     else:
+        
         listing_form = ListingForm()
         measurements_form = MeasurementsForm()
         photo_form = PhotoForm()
-        
+    
     return render(request, 'hub/upload.html', {
-        'listing_form': listing_form, 
-        'measurements_form': measurements_form, 
+        'listing_form': listing_form,
+        'measurements_form': measurements_form,
         'photo_form': photo_form
     })

@@ -1,0 +1,17 @@
+{% load crispy_forms_tags %}
+<div class="album">
+  <div class="container">
+      <legend>Images</legend>
+    <div class="row m-3">
+        <div class="col">
+          {% crispy photo_form %}
+        </div>
+        <div class="col">
+        <label for="upload-bg-image" class="form-label">Background Image</label> 
+        <input class="form-control" type="file" id="upload-bg-image">
+        </div>
+    </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3 border border-3 border-light rounded p-3 " style="min-height: 250px;"  id="gallery">
+      </div>
+  </div>
+</div>

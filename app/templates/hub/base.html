@@ -1,21 +1,56 @@
 <!DOCTYPE html>
+
+
+{% load static %}
+
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %} <!-- Title Name -->  #}{% endblock %}</title>
-    {% load static %}
-
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}" >
-    <link rel="stylesheet" href="{% static 'hub/css/styles.css' %}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}<!-- Title Name -->{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'hub/css/styles.css' %}">
+    
     {% block extra_css %}{% endblock %}
   </head>
-  <body>
-    <div class="navbar">
-      <a class="nav-item" href="{% url 'gallery' %}">Przedmioty</a>
-      <a class="nav-item" href="{% url 'panel' %}">Dodaj</a>
-      <a class="nav-item" href="{% url 'templates' %}">Szablony</a>
-    </div>
-    {% block content %}<!-- Page content   -->{% endblock %}
+  <body class="bg-white"> <!-- Set pure white background color -->
+
+    <!-- Enhanced Navigation Bar -->
+    <header class="container-fluid bg-primary text-white py-3 mb-4">
+      <nav class="container navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand text-white" href="{% url 'panel' %}">MySite</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link text-white" href="{% url 'upload_file' %}">Items</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{% url 'panel' %}">Add</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{% url 'templates' %}">Templates</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="themeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Theme
+              </a>
+              <div class="dropdown-menu" aria-labelledby="themeDropdown">
+                <a class="dropdown-item" href="#" data-theme-switcher="auto">Auto</a>
+                <a class="dropdown-item" href="#" data-theme-switcher="light">Light</a>
+                <a class="dropdown-item" href="#" data-theme-switcher="dark">Dark</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="container">
+      {% block content %}<!-- Page content -->{% endblock %}
+    </main>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'hub/js/main.js' %}"></script>
+    
   </body>
 </html>
