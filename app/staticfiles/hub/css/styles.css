@@ -1,7 +1,0 @@
-.asteriskField {
-  display: none;
-}
-
-.custom-textarea {
-  height: auto !important;  /* This will allow the textarea to respect the rows attribute */
-}
