@@ -61,17 +61,18 @@
 
     {% block extra_css %}{% endblock %}
   </head>
+  {% include 'hub/components/svg.html' %}
   <body class="bg-white">
     <header>
       <!-- Sidebar for larger screens -->
-      <div class="sidebar bg-white border-right border-primary">
+      <div class="sidebar shadow p-3 bg-white border-right border-secondary">
         
         {% include 'hub/components/sidebar.html' %}
 
       </div>
 
       <!-- Navbar with offcanvas for smaller screens -->
-      <nav class="navbar navbar-light bg-light fixed-top">
+      <nav class="navbar navbar-light shadow-sm bg-light fixed-top">
         <div class="container-fluid">
           <button
             class="navbar-toggler"
@@ -82,6 +83,9 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
+          <!-- Place this tag where you want the button to render. -->
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/artpods56/attirekeeper" data-color-scheme="no-preference: light; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star artpods56/attirekeeper on GitHub">Star</a>
           <div
             class="offcanvas offcanvas-start"
             tabindex="-1"
@@ -98,11 +102,12 @@
     <!-- Main Navigation -->
 
     <!-- Main layout -->
-    <main class="main-content" style="margin-top: 58px">
+    <main class="main-content" style="margin-top: 20px">
       <div class="container pt-4">{% block content %}{% endblock %}</div>
     </main>
     <!-- Main layout -->
-
+<!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'hub/js/main.js' %}"></script>
   </body>

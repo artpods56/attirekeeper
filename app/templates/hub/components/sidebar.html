@@ -1,15 +1,40 @@
+{% load static %}
 
-  <ul class="sidebar-menu">
-    <li class="sidebar-menu-item">
-      <a href="#" class="sidebar-menu-link">Home</a>
-    </li>
-    <li class="sidebar-menu-item">
-      <a href="#" class="sidebar-menu-link">About</a>
-    </li>
-    <li class="sidebar-menu-item">
-      <a href="#" class="sidebar-menu-link">Services</a>
-    </li>
-    <li class="sidebar-menu-item">
-      <a href="#" class="sidebar-menu-link">Contact</a>
-    </li>
-  </ul>
+<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" width="64" height="64">
+      <span class="fs-4">AttireKeeper</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+          Customers
+        </a>
+      </li>
+    </ul>
+  </div>
