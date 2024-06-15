@@ -1,56 +1,109 @@
 <!DOCTYPE html>
-
-
 {% load static %}
-
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}<!-- Title Name -->{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'hub/css/styles.css' %}">
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static 'images/favicon.ico' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'hub/css/styles.css' %}"
+    />
+
+    <style>
+      body {
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+      .offcanvas-start {
+        width: 250px; /* Adjust the width as needed */
+      }
+      .sidebar {
+        display: none; /* Hide sidebar by default */
+        color: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        z-index: 1040; /* Ensure sidebar is above other content */
+        padding-top: 58px; /* Adjust based on navbar height */
+      }
+      .sidebar .nav-link {
+        color: #fff;
+      }
+      .main-content {
+        flex: 1;
+        padding: 1rem;
+      }
+      @media (min-width: 768px) {
+        .offcanvas-start {
+          display: none; /* Hide offcanvas on larger screens */
+        }
+        .sidebar {
+          display: block; /* Show sidebar on larger screens */
+        }
+        .main-content {
+          margin-left: 250px; /* Adjust based on the width of the sidebar */
+        }
+      }
+    </style>
+
     {% block extra_css %}{% endblock %}
   </head>
-  <body class="bg-white"> <!-- Set pure white background color -->
+  <body class="bg-white">
+    <header>
+      <!-- Sidebar for larger screens -->
+      <div class="sidebar bg-white border-right border-primary">
+        
+        {% include 'hub/components/sidebar.html' %}
 
-    <!-- Enhanced Navigation Bar -->
-    <header class="container-fluid bg-primary text-white py-3 mb-4">
-      <nav class="container navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand text-white" href="{% url 'panel' %}">MySite</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link text-white" href="{% url 'upload_file' %}">Items</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="{% url 'panel' %}">Add</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="{% url 'templates' %}">Templates</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-white" href="#" id="themeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Theme
-              </a>
-              <div class="dropdown-menu" aria-labelledby="themeDropdown">
-                <a class="dropdown-item" href="#" data-theme-switcher="auto">Auto</a>
-                <a class="dropdown-item" href="#" data-theme-switcher="light">Light</a>
-                <a class="dropdown-item" href="#" data-theme-switcher="dark">Dark</a>
-              </div>
-            </li>
-          </ul>
+      </div>
+
+      <!-- Navbar with offcanvas for smaller screens -->
+      <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="offcanvas offcanvas-start"
+            tabindex="-1"
+            id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel"
+          >
+            <div class="offcanvas-body">
+              {% include 'hub/components/sidebar.html' %}
+            </div>
+          </div>
         </div>
       </nav>
     </header>
+    <!-- Main Navigation -->
 
-    <!-- Main content -->
-    <main class="container">
-      {% block content %}<!-- Page content -->{% endblock %}
+    <!-- Main layout -->
+    <main class="main-content" style="margin-top: 58px">
+      <div class="container pt-4">{% block content %}{% endblock %}</div>
     </main>
+    <!-- Main layout -->
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'hub/js/main.js' %}"></script>
-    
   </body>
 </html>
