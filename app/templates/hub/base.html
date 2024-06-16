@@ -20,45 +20,6 @@
       type="text/css"
       href="{% static 'hub/css/styles.css' %}"
     />
-
-    <style>
-      body {
-        overflow-x: hidden; /* Prevent horizontal scroll */
-      }
-      .offcanvas-start {
-        width: 250px; /* Adjust the width as needed */
-      }
-      .sidebar {
-        display: none; /* Hide sidebar by default */
-        color: #fff;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 250px;
-        z-index: 1040; /* Ensure sidebar is above other content */
-        padding-top: 58px; /* Adjust based on navbar height */
-      }
-      .sidebar .nav-link {
-        color: #fff;
-      }
-      .main-content {
-        flex: 1;
-        padding: 1rem;
-      }
-      @media (min-width: 768px) {
-        .offcanvas-start {
-          display: none; /* Hide offcanvas on larger screens */
-        }
-        .sidebar {
-          display: block; /* Show sidebar on larger screens */
-        }
-        .main-content {
-          margin-left: 250px; /* Adjust based on the width of the sidebar */
-        }
-      }
-    </style>
-
     {% block extra_css %}{% endblock %}
   </head>
   {% include 'hub/components/svg.html' %}

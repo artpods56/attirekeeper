@@ -17,14 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hub.views import gallery, add, templates, panel, upload_file, materials
+from hub.views import upload, templates
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gallery/', gallery, name='gallery'),
     path('templates/', templates, name='templates'),
-    path('panel/', panel, name='panel'),
-    path('upload/', upload_file, name='upload_file'),
+    path('upload/', upload, name='upload'),
     path('api/', include('api.urls')),
-    path('materials/', materials, name='materials'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

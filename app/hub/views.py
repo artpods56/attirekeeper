@@ -30,8 +30,6 @@ def panel(request):
     logger.debug("Loading panel view.")
     listing_form = ListingForm()
     measurements_form = MeasurementsForm()
-    logger.debug('Dominik jest giga koksem!')
-    
     photo_form = PhotoForm()
     return render(request, 'hub/panel.html', {'listing_form': listing_form, 
                                               'measurements_form': measurements_form, 
@@ -41,26 +39,6 @@ def materials(request):
     return render(request, 'hub/materials.html')
 
 def upload(request):
-    if request.method == 'POST':
-        form = UploadFiles(request.POST, request.FILES)
-        if form.is_valid():
-            files = []
-            if 'file_path' in request.FILES:
-                for file in request.FILES.getlist('file_path'):
-                    files.append(FileList(file_path=file))
-            # print(len(files))
-            if len(files) > 0:
-                try:
-                    FileList.objects.bulk_create(files)
-                    messages.success(request, "File(s) has been uploaded successfully.")
-                except Exception as ex:
-                    messages.error(request, ex)
-        else:
-            messages.error(request, 'Form data is invalid')
- 
-    return redirect('home')
-
-def upload_file(request):
     logger.debug("View received a request")
     if request.method == 'POST':
         logger.debug("Got a POST request")
@@ -85,7 +63,7 @@ def upload_file(request):
                 photo = Photo(listing_id=listing, image=file)
                 photo.save()
 
-            return redirect('upload_file')  # Replace with your success URL
+            return redirect('upload')  # Replace with your success URL
     else:
         
         listing_form = ListingForm()

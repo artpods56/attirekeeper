@@ -47,16 +47,17 @@ class ListingForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["size"].widget = CustomSelectWidget(choices_map=Listing.size_choices_map, choices=Listing.size_choices)
-        
-        
+        self.fields["size"].widget = CustomSelectWidget(
+            choices_map=Listing.size_choices_map, choices=Listing.size_choices
+        )
+
         self.fields["size"].widget.attrs["disabled"] = True
 
         self.helper = FormHelper()
         self.helper.form_id = "id-listing-form"
         self.helper.form_method = "post"
         self.helper.form_class = "form-floating"
-        self.helper.form_action = reverse("panel")
+        self.helper.form_action = reverse("upload")
 
         self.helper.layout = Layout(
             Fieldset(
@@ -75,30 +76,40 @@ class ListingForm(forms.ModelForm):
                                 "General Information",
                                 Row(
                                     Column(
-                                    FloatingField("condition"),
+                                        FloatingField("brand"),
+                                        FloatingField("condition"),
+                                        FloatingField("price"),
                                     ),
-                                    Column(
-                                    FloatingField("brand"),
-                                    FloatingField("price"),
+                                    css_class="mt-4",
                                 ),
-                                css_class="mt-4",
-                                )
                             ),
                             Tab(
                                 "Measurements",
                                 Row(
                                     Column(
-                                        FloatingField("category", css_class="form-select"),),
-                                    Column(
-                                        FloatingField("size"))),
-                                
-                                HTML("{% include 'hub/components/measurements_form.html' %}"),
+                                        FloatingField(
+                                            "category", css_class="form-select"
+                                        ),
+                                    ),
+                                    Column(FloatingField("size")),
+                                ),
+                                HTML(
+                                    "{% include 'hub/components/measurements_form.html' %}"
+                                ),
                                 css_class="mt-4",
                             ),
                         ),
                     ),
                 ),
-            )
+            ),
+            Fieldset(
+                "Photos",
+                HTML("{% include 'hub/components/images_form.html' %}"),
+                Div(
+                    Submit("submit", "Submit", css_class="btn btn-primary"),
+                    css_class="mt-4",
+                ),
+            ),
         )
 
 
