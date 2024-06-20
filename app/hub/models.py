@@ -1,6 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
+from django.core.validators import validate_image_file_extension
 import os
 
 class Brand(models.Model):
@@ -80,7 +81,7 @@ class Listing(models.Model):
     
 class Photo(models.Model):
     photo_id = models.AutoField(primary_key=True)
-    image = models.ImageField(upload_to='listing_photos/')
+    image = models.ImageField(upload_to='listing_photos/', null=True, blank=True, validators=[validate_image_file_extension])
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE)
      
     def __str__(self):

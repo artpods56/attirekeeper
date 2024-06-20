@@ -21,7 +21,7 @@ document.getElementById('id_image').addEventListener('change', function(event) {
             col.className = 'col';
             const card = `
                 <div class="card shadow-sm">
-                    <img class="bd-placeholder-img card-img-top" src="${e.target.result}" alt="Thumbnail">
+                    <img class="item-image" src="${e.target.result}" alt="Thumbnail">
                     <div class="card-body">
                         <p class="card-text">${file.name}</p>
                         <div class="d-flex justify-content-between align-items-center">
@@ -181,3 +181,51 @@ function setSelectorListener() {
   
   toggleForm();
 
+  document.getElementById('id-listing-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const formProps = Object.fromEntries(formData);
+
+    for (const [key, value] of Object.entries(formProps)) {
+        console.log(`${key}: ${value}`);
+    }
+
+    // Collect selected files from containers
+    const selectedImages = document.querySelectorAll('.item-image');
+    
+    // Clear the existing files input
+    formData.delete('image');
+
+    selectedImages.forEach(async (imgElement, index) => {
+        const src = imgElement.src;
+        if (src.startsWith('data:image')) {
+            const imageBlob = await fetch(src).then(r => r.blob()); 
+        }
+    });
+
+    // Wait for all images to be appended before sending the form
+    Promise.all(Array.from(selectedImages).map(async (imgElement, index) => {
+        const src = imgElement.src;
+        if (src.startsWith('data:image')) {
+            const imageBlob = await fetch(src).then(r => r.blob()); 
+            formData.append('image', imageBlob, `image${index}.png`);
+        }
+    })).then(() => {
+        $.ajax({
+            url: event.target.action,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+            },
+            success: function(response) {
+                console.log('Files uploaded successfully');
+            },
+            error: function(error) {
+                console.log('An error occurred while uploading files');
+            }
+        });
+    });
+});
