@@ -1,0 +1,49 @@
+{% extends "hub/base.html" %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_css %}
+
+{% endblock %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Items List</h2>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Size</th>
+                <th scope="col">Flaws</th>
+                <th scope="col">Price</th>
+                <th scope="col">Condition</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in listing_data %}
+            <tr>
+                <td>{{ item.listing.title }}</td>
+                <td>
+                {% if item.photos %}
+                <img src="{{ item.photos.image.url }}" alt="Listing photo" style="max-width: 200px;">
+                {% else %}
+                    <p>No photos available for this listing.</p>
+                {% endif %}
+                </td>
+                <td>{{ item.listing.size }}</td>
+                <td>{{ item.listing.flaws }}</td>
+                <td>{{ item.listing.price }}</td>
+                <td>{{ item.listing.condition }}</td>
+                <td>{{ item.listing.category }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

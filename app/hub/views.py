@@ -26,9 +26,29 @@ def templates(request):
     listing_form = ListingForm()
     measurements_form = MeasurementsForm()
     photo_form = PhotoForm()
-    return render(request, 'hub/templates.html', {'listing_form': listing_form, 
+    return render(request, 'hub/pages/templates.html', {'listing_form': listing_form, 
                                               'measurements_form': measurements_form, 
                                               'photo_form': photo_form})
+    
+    
+def items(request):
+        listings = Listing.objects.prefetch_related('photo_set').all()
+
+        # Prepare data for the template
+        listing_data = []
+        for listing in listings:
+            photos = listing.photo_set.all()
+            listing_data.append({
+                'listing': listing,
+                'photos': photos.first(),
+            })
+
+        # Pass the data to the template
+        context = {
+            'listing_data': listing_data,
+        }
+
+        return render(request, 'hub/pages/items.html', context)
     
 def upload(request):
     logger.debug("View received a request")
@@ -63,7 +83,7 @@ def upload(request):
         measurements_form = MeasurementsForm()
         photo_form = PhotoForm()
     
-    return render(request, 'hub/upload.html', {
+    return render(request, 'hub/pages/upload.html', {
         'listing_form': listing_form,
         'measurements_form': measurements_form,
         'photo_form': photo_form

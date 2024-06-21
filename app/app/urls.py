@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hub.views import upload, templates
+from hub.views import upload, templates, items
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('templates/', templates, name='templates'),
     path('upload/', upload, name='upload'),
+    path('items/', items, name='items'),
     path('api/', include('api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
