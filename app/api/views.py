@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from django.apps import apps
 import logging
 from hub.forms import TemplateForm
-from hub.models import Template, Brand
+from django.forms.models import model_to_dict
+from hub.models import Template, Brand, Listing
 
 
 logger = logging.getLogger( __name__ )
@@ -80,3 +81,31 @@ def brand_autocomplete(request):
         names = list(qs.values_list('name', flat=True))
         return JsonResponse(names, safe=False)
     return JsonResponse([], safe=False)
+
+
+def get_listings(request, listing_id=None):
+    if listing_id:
+        listings = Listing.objects.prefetch_related('photo_set').filter(listing_id=listing_id)
+    else:
+        listings = Listing.objects.prefetch_related('photo_set').all()
+    
+    # Prepare data for JSON serialization
+    listing_data = []
+    for listing in listings:
+        listing_dict = model_to_dict(listing)
+        
+        # Handle ImageFields
+        for field_name, value in listing_dict.items():
+            if hasattr(value, 'url'):
+                listing_dict[field_name] = request.build_absolute_uri(value.url)
+        
+        photos = listing.photo_set.all()
+        listing_dict['photos'] = [{
+            'id': photo.photo_id,
+            'url': request.build_absolute_uri(photo.image.url) if photo.image else None,
+            # Add other photo fields as needed
+        } for photo in photos]
+        
+        listing_data.append(listing_dict)
+    
+    return JsonResponse({'rows': listing_data, 'total': listings.count()})
