@@ -1,0 +1,24 @@
+
+<table id="table"
+       data-toggle="table"
+       data-url="{% url 'get_listings' %}"
+       data-pagination="true"
+       data-search="true">
+    <thead>
+        <tr>
+            <th data-field="listing_id">Listing ID</th>
+            <th data-field="title">Title</th>
+            <th data-field="description">Description</th>
+            <th data-field="size">Size</th>
+            <th data-field="flaws">Flaws</th>
+            <th data-field="brand">Brand</th>
+            <th data-field="price">Price</th>
+            <th data-field="condition">Condition</th>
+            <th data-field="category">Category</th>
+            <th data-field="photos" data-formatter="imageFormatter">Image</th>
+        </tr>
+    </thead>
+</table>
+
+{% load static %}
+<script src="{% static 'hub/js/modules/image_formatter.js' %}"></script>
