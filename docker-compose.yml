@@ -3,6 +3,7 @@ version: "3.8"
 networks:
   backend:
     driver: bridge
+
 services:
   api:
     build:
@@ -15,7 +16,6 @@ services:
       - type: bind
         source: ./api
         target: /code
-
     deploy:
       resources:
         reservations:
@@ -23,17 +23,7 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-
-    environment:
-      - DEBUG=1
-      - WATCHFILES_FORCE_POLLING=true
-      - CUDA_DEVICE_ORDER=PCI_BUS_ID
-      - PYTORCH_NVML_BASED_CUDA_CHECK=1
-      - CUDA_VISIBLE_DEVICES=0
-      - SYS_HOME_DIR=/code
-      - PYTHONUNBUFFERED=0
-    
-
+    env_file: .env
     restart: always
     networks:
       - backend
@@ -49,16 +39,7 @@ services:
       - type: bind
         source: ./app
         target: /code
-    environment:
-      - DEBUG=1
-      - WATCHFILES_FORCE_POLLING=true
-      - DJANGO_SUPERUSER_USERNAME=admin
-      - DJANGO_SUPERUSER_EMAIL=admin@domain.com
-      - DJANGO_SUPERUSER_PASSWORD=admin
-      - DJANGO_SETTINGS_MODULE=app.settings
-      - DATABASE=postgres
-      - SQL_HOST=postgres
-      - SQL_PORT=5432
+    env_file: .env
     restart: always
     networks:
       - backend
@@ -71,10 +52,7 @@ services:
     ports:
       - 5432:5432
     restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+    env_file: .env
     volumes:
       - type: bind
         source: ./postgres
@@ -86,12 +64,8 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin4
     ports:
-      - 5050:80 # Expose pgAdmin on port 5050 of the host
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user@domain.com
-      PGADMIN_DEFAULT_PASSWORD: root
-      PGADMIN_LISTEN_PORT: 80
+      - 5050:80
+    env_file: .env
     restart: always
     networks:
       - backend
-
