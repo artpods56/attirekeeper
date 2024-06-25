@@ -4,6 +4,18 @@ from django.db.models.signals import post_delete
 from django.core.validators import validate_image_file_extension
 import os
 
+
+
+class Purchase(models.Model):
+    purchase_id = models.AutoField(primary_key=True)
+    listing_id = models.ForeignKey('Listing', on_delete=models.CASCADE)
+    bought_for = models.DecimalField(max_digits=10, decimal_places=2)
+    bought_at = models.DateField(null=True, blank=True)
+    sold_at = models.DateField(null=True, blank=True)
+    sold_for = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    sold = models.BooleanField(default=False)
+    
+
 class Brand(models.Model):
     brand_id = models.AutoField(primary_key=True)
     name = models.TextField()
@@ -28,7 +40,7 @@ class Listing(models.Model):
         
     listing_id = models.AutoField(primary_key=True)
     title = models.CharField()
-    description = models.TextField()
+    description = models.TextField(blank=True)
     
     default_size_choice = [(None, 'Not selected')]
     top_garment_sizes = [
@@ -47,12 +59,13 @@ class Listing(models.Model):
     
     size_choices_map = {option[0]:'top_garment' for option in top_garment_sizes} | {option[0]:'bottom_garment' for option in bottom_garment_sizes}
     
-    size = models.CharField(choices=size_choices, default=None)
-    flaws = models.CharField(blank=True)
-    brand = models.ForeignKey(Brand, null=True, blank=True, on_delete=models.SET_NULL)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    size = models.CharField(blank=True, null=True, choices=size_choices, default=None)
+    flaws = models.CharField(blank=True, null=True)
+    brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.SET_NULL)
+    price = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
 
-    condition = models.CharField(choices=[
+    condition = models.CharField(blank=True, null=True, 
+        choices=[
         (None, 'Not selected'),
         ('decent', 'Decent'),
         ('good', 'Good'),
@@ -61,14 +74,15 @@ class Listing(models.Model):
         ('new_with_tags', 'New with tags')
     ], default=None)
     
-    category = models.CharField(choices=[
+    category = models.CharField(blank=True, null=True, 
+        choices=[
         (None, 'Not selected'),
         ('bottom_garment', 'Bottom Garment'),
         ('top_garment', 'Top Garment'),
         ('accessories', 'Accessories')
     ], default=None)
     
-    measurements_id = models.ForeignKey(Measurement, on_delete=models.CASCADE)
+    measurements_id = models.ForeignKey(Measurement, on_delete=models.CASCADE, blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
