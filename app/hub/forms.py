@@ -1,5 +1,5 @@
 from django import forms
-from .models import Template, Listing, Measurement, Photo, Brand
+from .models import Template, Listing, Measurement, Photo, Brand, Purchase
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Fieldset, HTML, Button
 from crispy_forms.bootstrap import InlineRadios, Tab, TabHolder, Field, Div
@@ -167,3 +167,68 @@ class MeasurementsForm(forms.ModelForm):
         self.helper.form_id = "id-measurements-form"
         self.helper.form_method = "post"
         self.helper.form_class = "form-floating"
+
+
+class PurchaseForm(forms.ModelForm):
+    
+    title = forms.CharField()
+    
+    bought_at = forms.DateField(
+        widget = forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'date'}),
+        required=False
+    )
+    
+    sold_at = forms.DateField(
+        widget = forms.DateInput(
+            attrs={
+                'class': 'form-control',
+                'type': 'date'}),
+        required=False
+    )
+    class Meta:
+        model = Purchase
+        fields = ['bought_for', 'bought_at', 'sold_at', 'sold_for', 'sold']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            HTML('''
+            <table>    
+            <tr>
+                <td class="bs-checkbox">
+                    <input type="checkbox" name="btSelectItem" disabled/>
+                </td>
+                <td>
+                    <span class="text">new record</span>
+                </td>
+            '''),
+            HTML('<td>'),
+            Field('title', wrapper_class='test-class', template = 'bootstrap5/custom_crispy_field.html'),
+            HTML('</td><td>'),
+            Field('bought_for', wrapper_class='mb-0', template = 'bootstrap5/custom_crispy_field.html'),
+            HTML('</td><td>'),
+            Field('bought_at', wrapper_class='mb-0', template = 'bootstrap5/custom_crispy_field.html'),
+            HTML('</td><td>'),
+            Field('sold_at', wrapper_class='mb-0', template = 'bootstrap5/custom_crispy_field.html'),
+            HTML('</td><td>'),
+            Field('sold_for', wrapper_class='mb-0', template = 'bootstrap5/custom_crispy_field.html'),
+            HTML('</td><td>'),
+            Field('sold', wrapper_class='mb-0', template = 'bootstrap5/custom_crispy_checkbox.html'),
+            HTML('</td></tr></table>')
+        )
+        for field in self.fields.values():
+            field.label = False
+        
+    def save(self, commit=True):
+        purchase = super().save(commit=False)
+        listing = Listing(title=self.cleaned_data['title'])
+        if commit:
+            listing.save()
+            purchase.listing_id = listing
+            purchase.save()
+        return purchase, listing
