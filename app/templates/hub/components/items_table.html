@@ -1,0 +1,38 @@
+
+<table id="table" class="table"
+    data-toggle="table"
+    data-url="{% url 'get_listings' %}"
+    data-pagination="true"
+    data-search="true"
+    data-show-columns="true"
+    data-mobile-responsive="true">
+<thead>
+ <tr>
+     <th data-field="state" data-checkbox="true"></th>
+     <th data-field="listing_id" data-sortable="true">Listing ID</th>
+     <th data-field="product" data-formatter="productFormatter" data-sortable="false">Product</th>
+     <th data-field="size" data-sortable="true">Size</th>
+     <th data-field="price" data-sortable="true">Price</th>
+     <th data-field="condition" data-sortable="true">Condition</th>
+ </tr>
+</thead>
+</table>
+
+{% load static %}
+<script src="{% static 'hub/js/modules/image_formatter.js' %}"></script>
+<script>
+function productFormatter(value, row) {
+    let imageHtml = imageFormatter(row.photos, row);
+    return `
+        <div class="row align-items-center">
+            <div class="col-auto">
+                ${imageHtml}
+            </div>
+            <div class="col">
+                <h5 class="listing-title">${row.title}</h5>
+                <p class="listing-details text-muted">${row.category}</p>
+            </div>
+        </div>
+    `;
+}
+</script>

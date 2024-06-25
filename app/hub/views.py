@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, JsonResponse, Http404
-from .models import Listing, Template, Measurement, Photo, Brand
-from .forms import TemplateForm, ListingForm, PhotoForm, MeasurementsForm
+from django.http import JsonResponse
+from .models import Listing, Template, Measurement, Photo, Brand, Purchase
+from .forms import TemplateForm, ListingForm, PhotoForm, MeasurementsForm, PurchaseForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.exceptions import ValidationError
 from django.middleware.csrf import get_token
+from django.forms import modelformset_factory
 import requests
 
 import logging
@@ -32,23 +33,7 @@ def templates(request):
     
     
 def items(request):
-        listings = Listing.objects.prefetch_related('photo_set').all()
-
-        # Prepare data for the template
-        listing_data = []
-        for listing in listings:
-            photos = listing.photo_set.all()
-            listing_data.append({
-                'listing': listing,
-                'photos': photos.first(),
-            })
-
-        # Pass the data to the template
-        context = {
-            'listing_data': listing_data,
-        }
-
-        return render(request, 'hub/pages/items.html', context)
+    return render(request, 'hub/pages/items.html')
     
 def upload(request):
     logger.debug("View received a request")
@@ -91,3 +76,16 @@ def upload(request):
 
 def materials(request):
     return render(request, 'hub/materials.html')
+
+
+def purchases(request):
+    if request.method == 'POST':
+        purchase_form = PurchaseForm(request.POST)
+        if purchase_form.is_valid():
+            purchase_form.save()
+            return redirect('purchases')
+
+    purchase_form = PurchaseForm()
+    listing_form = ListingForm()
+    return render(request, 'hub/pages/purchases.html', {'purchase_form': purchase_form,
+                                                        'listing_form': listing_form})
