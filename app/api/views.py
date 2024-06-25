@@ -4,7 +4,7 @@ from django.apps import apps
 import logging
 from hub.forms import TemplateForm
 from django.forms.models import model_to_dict
-from hub.models import Template, Brand, Listing
+from hub.models import Template, Brand, Listing, Purchase
 
 
 logger = logging.getLogger( __name__ )
@@ -109,3 +109,27 @@ def get_listings(request, listing_id=None):
         listing_data.append(listing_dict)
     
     return JsonResponse({'rows': listing_data, 'total': listings.count()})
+
+
+def get_purchases(request, purchase_id=None):
+    if purchase_id:
+        purchases = Purchase.objects.select_related().filter(purchase_id=purchase_id)
+    else:
+        purchases = Purchase.objects.select_related().all()
+    
+    purchase_data = []
+    for purchase in purchases:
+        purchase_dict = model_to_dict(purchase)
+        purchase_data.append(purchase_dict)
+    
+    return JsonResponse({'rows': purchase_data, 'total': purchases.count()})
+                        
+                        
+                        
+def remove_listings(request):
+    ids = request.POST.getlist('listing_ids[]')
+    response = Listing.objects.filter(listing_id=ids).delete()
+    if response[0] == 0:
+        return JsonResponse({'status': 'error'})
+    else:
+        return JsonResponse({'status': 'success'})
