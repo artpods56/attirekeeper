@@ -1,0 +1,74 @@
+{% load crispy_forms_tags %}
+
+
+<form method="post" id="purchase-form">
+
+<table id="table" class="table"
+    data-toggle="table"
+    data-url="{% url 'get_purchases' %}"
+    data-pagination="true"
+    data-search="true"
+    data-show-columns="true"
+    data-mobile-responsive="true">
+<thead>
+    <tr>
+        <th data-field="state" data-checkbox="true"></th>
+        <th data-field="purchase_id" data-sortable="true">Purchase ID</th>
+        <th data-field="listing_id" data-sortable="true", data-formatter="itemFormatter">Item</th>
+        <th data-field="bought_for" data-sortable="true">Bought For</th>
+        <th data-field="bought_at" data-sortable="true">Bought At</th>
+        <th data-field="sold_at" data-sortable="true">Sold At</th>
+        <th data-field="sold_for" data-sortable="true">Sold For</th>
+        <th data-field="sold" data-sortable="true", data-formatter="checkboxFormatter" class="bs-checkbox">Sold</th>
+    </tr>
+</thead>
+</table>
+{% csrf_token %}
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<div id="url-container" data-url="{% url 'get_listings' 0 %}"></div>
+<div id="form-table" style="display: none;"> {% crispy purchase_form %} </div>
+
+{% load static %}
+<script src="{% static 'hub/js/modules/item_formatter.js' %}"></script>
+<script>
+
+function updateListingTitle(element) {
+    const listingId = element.getAttribute('data-listing-id');
+    const baseUrl = document.getElementById('url-container').getAttribute('data-url');
+    const url = baseUrl.replace('0', listingId);
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.rows && data.rows.length > 0) {
+                element.textContent = data.rows[0].title;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching listing title:', error);
+        });
+}
+
+function checkboxFormatter(value, row, index) {
+    if (row.sold) {
+        return '<i class="bi bi-check-square"></i>';
+    } else {
+        return '<i class="bi bi-square"></i>';
+    }
+}
+
+$('#table').on('post-body.bs.table', function () {
+    $('.listing-title').each(function() {
+        updateListingTitle(this);
+    });
+
+    var formTable = $('#form-table tbody').html();
+    $('#table tbody').append(formTable);
+});
+
+
+</script>
+
