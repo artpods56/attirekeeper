@@ -189,7 +189,7 @@ cython_debug/
 # Translations
 
 # Django stuff:
-
+app/media/
 app/staticfiles/
 
 # Flask stuff:
