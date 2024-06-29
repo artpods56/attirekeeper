@@ -24,12 +24,8 @@ def gallery(request):
 
 def templates(request):
     logger.debug("Loading templates view.")
-    listing_form = ListingForm()
-    measurements_form = MeasurementsForm()
-    photo_form = PhotoForm()
-    return render(request, 'hub/pages/templates.html', {'listing_form': listing_form, 
-                                              'measurements_form': measurements_form, 
-                                              'photo_form': photo_form})
+    template_form = TemplateForm()
+    return render(request, 'hub/pages/templates.html', {'template_form': template_form})
     
     
 def items(request):

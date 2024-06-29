@@ -1,0 +1,25 @@
+{% extends "hub/base.html" %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_css %}
+
+{% endblock %}
+
+{% block title %} Templates {% endblock %}
+
+{% block content %}
+    <div class="container p-3 mb-3" style="min-height: 450px;">
+        <div class="row">
+            <div class="col-12">
+                {% csrf_token %}
+                {% crispy template_form %}
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

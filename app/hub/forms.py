@@ -29,7 +29,14 @@ class TemplateForm(forms.ModelForm):
             }
         )
         self.fields["description"].widget.attrs.update({"class": "description-input"})
-
+        
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset('Template Details',
+                    Field('name'),
+                    Field('description'),
+                ),
+            )
 
 class ListingForm(forms.ModelForm):
     class Meta:
