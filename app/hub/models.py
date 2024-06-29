@@ -20,7 +20,13 @@ class Brand(models.Model):
     brand_id = models.AutoField(primary_key=True)
     name = models.TextField()
 
-
+    def __str__(self):
+        return self.name
+    
+class Platform(models.Model):
+    platform_id = models.AutoField(primary_key=True)
+    name = models.TextField()
+    
     def __str__(self):
         return self.name
     
