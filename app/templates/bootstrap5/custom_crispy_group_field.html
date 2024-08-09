@@ -1,0 +1,111 @@
+{% load crispy_forms_field %}
+{% if field.is_hidden %}
+    {{ field }}
+{% else %}
+    <{% if tag %}{{ tag }}{% else %}div{% endif %} id="div_{{ field.auto_id }}" class="{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
+    
+    {% if field.name == 'brand' %}
+        <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addBrandModal">Add Brand</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#removeBrandModal">Remove Brand</a></li>
+                </ul>
+
+            {% if field.errors %}
+                {% crispy_field field 'class' 'form-select is-invalid' 'placeholder' field.name %}
+            {% else %}
+                {% crispy_field field 'class' 'form-select' 'placeholder' field.name %}
+            {% endif %}
+        </div>
+    {% elif field|is_select %}
+        {% if field.errors %}
+            {% crispy_field field 'class' 'form-select is-invalid' 'placeholder' field.name %}
+        {% else %}
+            {% crispy_field field 'class' 'form-select' 'placeholder' field.name %}
+        {% endif %}
+    {% else %}
+        {% if field.errors %}
+            {% crispy_field field 'class' 'form-control is-invalid' 'placeholder' field.name %}
+        {% else %}
+            {% crispy_field field 'class' 'form-control' 'placeholder' field.name %}
+        {% endif %} 
+    {% endif %} 
+    
+    <label {% if field.id_for_label %}for="{{ field.id_for_label }}"{% endif %}{% if label_class %} class="{{ label_class }}"{% endif %}>
+        {{ field.label }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+    </label>
+    {% include 'bootstrap5/layout/help_text_and_errors.html' %}
+    </{% if tag %}{{ tag }}{% else %}div{% endif %}>
+{% endif %}
+
+<!-- Add Brand Modal -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBrandModalLabel">Add New Brand</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addBrandForm">
+          <div class="mb-3">
+            <label for="newBrandName" class="form-label">Brand Name</label>
+            <input type="text" class="form-control" id="newBrandName" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="addBrand()">Add Brand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Brand Modal -->
+<div class="modal fade" id="removeBrandModal" tabindex="-1" aria-labelledby="removeBrandModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="removeBrandModalLabel">Remove Brand</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="removeBrandForm">
+          <div class="mb-3">
+            <label for="brandToRemove" class="form-label">Select Brand to Remove</label>
+            <select class="form-select" id="brandToRemove" required>
+              <!-- Populate this select with existing brands -->
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="removeBrand()">Remove Brand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function addBrand() {
+    // Implement the logic to add a new brand
+    // You might want to use AJAX to send the data to the server
+    // and update the brand select field
+}
+
+function removeBrand() {
+    // Implement the logic to remove a brand
+    // You might want to use AJAX to send the data to the server
+    // and update the brand select field
+}
+
+// Populate the remove brand select field when the modal is shown
+document.getElementById('removeBrandModal').addEventListener('show.bs.modal', function (event) {
+    var select = document.getElementById('brandToRemove');
+    var brandSelect = document.getElementById('{{ field.auto_id }}');
+    select.innerHTML = brandSelect.innerHTML;
+});
+</script>

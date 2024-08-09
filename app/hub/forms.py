@@ -83,7 +83,7 @@ class ListingForm(forms.ModelForm):
                                 "General Information",
                                 Row(
                                     Column(
-                                        FloatingField("brand"),
+                                        FloatingField("brand", template='bootstrap5/custom_crispy_group_field.html'),
                                         FloatingField("condition"),
                                         FloatingField("price"),
                                     ),
