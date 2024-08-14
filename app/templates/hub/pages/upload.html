@@ -10,10 +10,22 @@
 
 {% block content %}
     <div class="container p-3 mb-3" style="min-height: 450px;">
-        {% csrf_token %}
         {% crispy listing_form %}
     </div>
 
 
+{% endblock %}
+
+{% block extra_js %}
+
+<p style="display: none;" id="photos-data">{{ listing_dict|safe }}</p>
+
 <script type="module" src="{% static 'hub/js/pages/upload.js' %}"></script>
+<script>
+    function setFormAction(actionUrl) {
+        var form = document.getElementById('id-listing-form');
+        form.action = actionUrl;
+        console.log(form.action);
+    }
+</script>
 {% endblock %}

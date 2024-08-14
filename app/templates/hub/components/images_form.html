@@ -5,8 +5,7 @@
 
       <div class="row m-3">
         <div class="col">
-          {% csrf_token %}
-          {% crispy photo_form %}</div>
+          {{ photo_form.image|as_crispy_field }}</div>
         <div class="col">
           <label for="upload-bg-image" class="form-label"
             >Background Image</label

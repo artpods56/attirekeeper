@@ -64,7 +64,7 @@ class ListingForm(forms.ModelForm):
         self.helper.form_id = "id-listing-form"
         self.helper.form_method = "post"
         self.helper.form_class = "form-floating"
-        self.helper.form_action = reverse("upload")
+
 
         self.helper.layout = Layout(
             Fieldset(
@@ -113,8 +113,8 @@ class ListingForm(forms.ModelForm):
                 "Photos",
                 HTML("{% include 'hub/components/images_form.html' %}"),
                 Div(
-                    Submit("submit", "Submit", css_class="btn btn-primary"),
-                    css_class="mt-4",
+                    HTML(" {% if task == 'create' %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='create' %}`)' class='btn btn-primary'>Create</button> {% else %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='update' id=id %}`)' class='btn btn-primary'>Update</button> {% endif %}"), 
+                    css_class="mt-4"
                 ),
             ),
         )

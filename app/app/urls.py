@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hub.views import upload, templates, items, purchases
+from hub.views import items_router, templates, items, purchases
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('templates/', templates, name='templates'),
-    path('upload/', upload, name='upload'),
     path('items/', items, name='items'),
+    path('items/<str:task>/', items_router, name='items_router'),
+    path('items/<str:task>/<int:id>/', items_router, name='items_router'),
     path('purchases/', purchases, name='purchases'),
     path('api/', include('api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
