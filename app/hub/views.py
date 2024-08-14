@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 from django.middleware.csrf import get_token
 from django.forms import modelformset_factory
 import json
-
+from io import BytesIO
+from PIL import Image
 
 import logging
 import requests
@@ -90,11 +91,15 @@ def items_view(request, id):
     listing = get_object_or_404(Listing, pk=id)
     listing_form = ListingForm(initial=listing.__dict__)
     measurements_form = MeasurementsForm(initial=listing.measurements_id.__dict__)
-
+    photo_form = PhotoForm()
+    
     photos = listing.photo_set.all()
+    
+    logger.debug(f"Photos: {photos}")
+    
     initial_images = [photo.image for photo in photos]
-    photo_form = PhotoForm(initial={'image': initial_images})
-
+    
+  
     # If you want to pass the photo data (e.g., id, url) to the context for display purposes
     listing_dict = {
         "photos": [{
@@ -126,6 +131,9 @@ def items_update(request, id):
 
 
     if listing_form.is_valid() and measurements_form.is_valid() and photo_form.is_valid():
+        
+        # remove old photos
+        listing.photo_set.all().delete()
         
         logger.debug("Forms are valid")
         listing = listing_form.save(commit=False)

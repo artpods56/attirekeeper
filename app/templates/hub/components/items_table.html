@@ -23,13 +23,21 @@
 <script>
 function productFormatter(value, row) {
     let imageHtml = imageFormatter(row.photos, row);
+
+    let baseUrl = "{% url 'items_router' task='view' id=0 %}";
+    
+    // Replace '0' with the actual listing ID
+
+    let item_id = '/' + row.listing_id + '/'; 
+    let url = baseUrl.replace('/0/', item_id);
+
     return `
         <div class="row align-items-center">
             <div class="col-auto">
                 ${imageHtml}
             </div>
             <div class="col">
-                <h5 class="listing-title">${row.title}</h5>
+                <h5 class="listing-title"><a href='${url}'>${row.title}</a></h5>
                 <p class="listing-details text-muted">${row.category}</p>
             </div>
         </div>

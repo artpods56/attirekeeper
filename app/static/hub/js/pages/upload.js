@@ -2,6 +2,23 @@ console.log("panel2.js loaded");
 
 import { isValidImage } from '../modules/is_valid_image.js';
 
+// Function to convert multiple image URLs to blobs
+async function urlsToBlobs(images) {
+    console.log("images", images);
+    const responses = await Promise.all(images.map(image => {
+        const response = fetch(image.url);
+        // check response
+        return response
+    }));
+
+    // transform responses to blobs
+    const blobs = await Promise.all(responses.map(response => response.blob()));
+
+    console.log("blobs", blobs);
+    return blobs;
+}
+
+
 document.getElementById('id_image').addEventListener('change', function(event) {
     const files = Array.from(event.target.files);
     const gallery = document.getElementById('gallery');
@@ -110,13 +127,21 @@ document.getElementById('id_image').addEventListener('change', function(event) {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async  function() {
     const photosData = JSON.parse(document.getElementById('photos-data').textContent);
 
-    console.log(photosData)
-    const gallery = document.getElementById('gallery');
+    // get array of image blobs by passing ulrs from json stored as photosData
+    // wait for all images to be fetched and converted to blobs
+    const imagesBlobsPromises = photosData.map(photo => 
+        fetch(photo.url).then(response => response.blob())
+    );
 
-    photosData.forEach(async (file) => {
+    // Wait for all promises to resolve
+    const imagesBlobs = await Promise.all(imagesBlobsPromises);
+
+    console.log("imagesBlobs", imagesBlobs);
+    imagesBlobs.forEach(async (file) => {
+        console.log("file", file);
 
         const isValid = await isValidImage(file);
                 if (!isValid) {
