@@ -24,10 +24,38 @@ def gallery(request):
 
     return render(request, 'hub/gallery.html')
 
-def templates(request):
-    logger.debug("Loading templates view.")
-    template_form = TemplateForm()
-    return render(request, 'hub/pages/templates.html', {'template_form': template_form})
+def templates(request, task = None, id = None):
+    
+    if request.method == 'POST':
+        template_form = TemplateForm(request.POST)
+        if template_form.is_valid():
+            template_form.save()
+            return redirect('templates')
+    
+    
+    if task == 'view' and id:
+        template = get_object_or_404(Template, pk=id)
+        template_form = TemplateForm(initial=template.__dict__)
+    else:
+        template_form = TemplateForm()
+    
+    listings = Listing.objects.all()
+    templates = Template.objects.all()
+    
+    listing_fields = [field.name for field in Listing._meta.get_fields()]
+    measurements_fields = [field.name for field in Measurement._meta.get_fields()]
+    logger.debug(f"Listing fields: {listing_fields+measurements_fields}")
+
+    context = {
+        'template_form': template_form,
+        'listings': listings,
+        'templates': templates,
+        'model_fields': filter(lambda x: '_id' not in x, set(listing_fields+measurements_fields)),
+        'current_template_id' : id
+    }
+    
+    
+    return render(request, 'hub/pages/templates.html', context=context)
     
     
 def items(request):

@@ -34,8 +34,25 @@ class TemplateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset('Template Details',
                     Field('name'),
-                    Field('description'),
+                    Field('description', rows=30),
                 ),
+            HTML('''
+                         <div class=" form-group mb-3">
+                <label for="field-selector" class="form-label">
+                    Select field to insert
+                </label>
+                <div class="d-flex">
+                    <select id="field-selector" class="form-control w-50">
+                        {% for field in model_fields %}
+                            <option value="{{ field }}">{{ field }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="insert-button" type="button" class="btn btn-primary ms-3">Insert</button>
+                    <button id="submit-button" type="submit" class="btn btn-primary ms-3">Submit</button>
+                </div>
+            </div>
+
+                 ''')
             )
 
 class ListingForm(forms.ModelForm):
@@ -113,7 +130,7 @@ class ListingForm(forms.ModelForm):
                 "Photos",
                 HTML("{% include 'hub/components/images_form.html' %}"),
                 Div(
-                    HTML(" {% if task == 'create' %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='create' %}`)' class='btn btn-primary'>Create</button> {% else %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='update' id=id %}`)' class='btn btn-primary'>Update</button> {% endif %}"), 
+                    HTML("<button type='button' id='copyImagesButton' class='btn btn-primary'>Copy all images</button> {% if task == 'create' %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='create' %}`)' class='btn btn-primary'>Create</button> {% else %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='update' id=id %}`)' class='btn btn-primary'>Update</button> {% endif %}"), 
                     css_class="mt-4"
                 ),
             ),

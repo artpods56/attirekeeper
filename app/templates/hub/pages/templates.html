@@ -8,18 +8,52 @@
 
 {% block title %} Templates {% endblock %}
 
+{% block extra_navbar %}
+<select id="template-selector" class="form-control w-25">
+    {% for template in templates %}
+        <option value="{{ template.template_id }}" {% if template.template_id == current_template_id %}selected{% endif %}>{{ template.name }}</option>
+    {% endfor %}
+</select>
+{% endblock %}
+
 {% block content %}
     <div class="container p-3 mb-3" style="min-height: 450px;">
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 {% csrf_token %}
                 {% crispy template_form %}
-            </div>
-            <div class="col-3">
+    
 
+
+            </div>
+            <div class="col-6">
+                <div class="form-group mb-3"
+            <fieldset>
+                <legend>Preview</legend>
+                <div class="form-group mb-3">
+                    <label for="selector" class="form-label">
+                        Select listing to Preview
+                    </label>
+                    <select id="listing-selector" class="form-control">
+                        {% for listing in listings %}
+                            <option value="{{ listing.listing_id }}">{{ listing.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+            </div>
+            <div id="preview" class="mb-3">
+                <label for="preview-text" class="form-label">
+                    Description
+                </label>
+                <textarea type="text" id="preview-text" class="form-control" rows="30" disabled></textarea>
             </div>
         </div>
 
     </div>
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'hub/js/pages/templates.js' %}"></script>
 {% endblock %}
