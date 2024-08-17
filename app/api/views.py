@@ -4,7 +4,7 @@ from django.apps import apps
 import logging
 from hub.forms import TemplateForm
 from django.forms.models import model_to_dict
-from hub.models import Template, Brand, Listing, Purchase
+from hub.models import Template, Brand, Listing, Purchase, Measurement
 
 
 logger = logging.getLogger( __name__ )
@@ -109,6 +109,19 @@ def get_listings(request, listing_id=None):
         listing_data.append(listing_dict)
     
     return JsonResponse({'rows': listing_data, 'total': listings.count()})
+
+def get_measurements(request, measurement_id=None):
+    if measurement_id:
+        measurements = Measurement.objects.filter(measurements_id=measurement_id)
+    else:
+        measurements = Measurement.objects.all()
+    
+    measurement_data = []
+    for measurement in measurements:
+        measurement_dict = model_to_dict(measurement)
+        measurement_data.append(measurement_dict)
+    
+    return JsonResponse({'rows': measurement_data, 'total': measurements.count()})
 
 
 def get_purchases(request, purchase_id=None):

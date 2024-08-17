@@ -30,14 +30,4 @@ body {
   flex: 1;
   padding: 1rem;
 }
-@media (min-width: 768px) {
-  .offcanvas-start {
-    display: none; /* Hide offcanvas on larger screens */
-  }
-  .sidebar {
-    display: block; /* Show sidebar on larger screens */
-  }
-  .main-content {
-    margin-left: 250px; /* Adjust based on the width of the sidebar */
-  }
-}
+

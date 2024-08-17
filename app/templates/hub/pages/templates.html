@@ -10,10 +10,11 @@
 
 {% block extra_navbar %}
 <select id="template-selector" class="form-control w-25">
-    {% for template in templates %}
-        <option value="{{ template.template_id }}" {% if template.template_id == current_template_id %}selected{% endif %}>{{ template.name }}</option>
+    {% for template in templates_data %}
+     <option id="{{ template.template_id}}" value="{{ template.description }}" {% if template.template_id == current_template_id %}selected{% endif %}>{{ template.name }}</option>
     {% endfor %}
 </select>
+
 {% endblock %}
 
 {% block content %}
@@ -35,8 +36,8 @@
                         Select listing to Preview
                     </label>
                     <select id="listing-selector" class="form-control">
-                        {% for listing in listings %}
-                            <option value="{{ listing.listing_id }}">{{ listing.title }}</option>
+                        {% for listing_key, listing_value in listings_data.items %}
+                            <option value="{{ listing_value }}">{{ listing_key }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -55,5 +56,7 @@
 {% endblock %}
 
 {% block extra_js %}
+    <p style="display: none;" id="template-data">{{ template_data|safe }}</p>
+    <p style="display: none;" id="listing-data">{{ listings_data|safe }}</p>
     <script src="{% static 'hub/js/pages/templates.js' %}"></script>
 {% endblock %}

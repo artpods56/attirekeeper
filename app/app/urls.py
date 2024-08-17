@@ -22,7 +22,7 @@ from hub.views import items_router, templates, items, purchases
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('templates/', templates, name='templates'),
-    path('templates/<str:tas>/<int:id>/', templates, name='templates'),
+    path('templates/<str:task>/<int:id>/', templates, name='templates'),
     path('items/', items, name='items'),
     path('items/<str:task>/', items_router, name='items_router'),
     path('items/<str:task>/<int:id>/', items_router, name='items_router'),

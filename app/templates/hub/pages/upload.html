@@ -8,6 +8,25 @@
 
 {% block title %} Home {% endblock %}
 
+{% block extra_navbar %}
+<div class="d-flex w-75">
+        <select id="listing-selector" class="form-select mx-1">
+            {% for listing in listings %}
+                <option value="{{ listing.listing_id }}" {% if listing.listing_id == id %}selected{% endif %}>{{ listing.title }}</option>
+            {% endfor %}
+        </select>
+        <select id="template-selector" class="form-select mx-1 w-25">
+            {% for template in templates %}
+                <option value="{{ template.description }}" >{{ template.name }}</option>
+            {% endfor %}
+        </select>
+
+</div>
+
+{% endblock %}
+
+
+
 {% block content %}
     <div class="container p-3 mb-3" style="min-height: 450px;">
         {% crispy listing_form %}
@@ -18,8 +37,8 @@
 
 {% block extra_js %}
 
-<p style="display: none;" id="photos-data">{{ listing_dict|safe }}</p>
-
+<p style="display: none;" id="photos-data">{{ photos_data|safe }}</p>
+<p style="display: none;" id="item-data">{{ item_data|safe }}</p>
 <script type="module" src="{% static 'hub/js/pages/upload.js' %}"></script>
 <script>
     function setFormAction(actionUrl) {

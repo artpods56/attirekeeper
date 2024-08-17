@@ -12,10 +12,23 @@ from PIL import Image
 
 import logging
 import requests
+from django.core import serializers
 
 logger = logging.getLogger( __name__ )
 logger.setLevel(logging.DEBUG)
 logger.info("Loaded views logger")
+
+
+def model_to_dict(instance):
+    serialized = serializers.serialize('json', [instance])
+    data = json.loads(serialized)[0]['fields']
+    
+    data = {key: value if value is not None else '-' for key, value in data.items() if '_at' not in key}
+    
+    logger.debug(f"Model to dict: {data}")
+    
+    
+    return data
 
 def add(request):
     return render(request, "hub/add.html")
@@ -26,34 +39,46 @@ def gallery(request):
 
 def templates(request, task = None, id = None):
     
+    listings = Listing.objects.all()
+    templates = Template.objects.all()
+    measurements = Measurement.objects.all()
+    listing_fields = [field.name for field in Listing._meta.get_fields()]
+    measurements_fields = [field.name for field in Measurement._meta.get_fields()]
+    logger.debug(f"Listing fields: {listing_fields+measurements_fields}")
+
+
     if request.method == 'POST':
         template_form = TemplateForm(request.POST)
         if template_form.is_valid():
             template_form.save()
             return redirect('templates')
+
+    else:
+        template_form = TemplateForm()
     
+    listing_data = {}
+    
+    for listing in listings:
+        listing_id = listing.__dict__['measurements_id_id']
+        measurement = get_object_or_404(Measurement, pk=listing_id)
+        
+        listing_data[listing.__dict__['title']] = json.dumps({**model_to_dict(listing),**model_to_dict(measurement)})
+    
+    context = {
+        'template_form': template_form,
+        'listings': listings,
+        'model_fields': filter(lambda x: '_id' not in x, set(listing_fields+measurements_fields)),
+        'current_template_id' : id,
+        'templates_data': templates,
+        'listings_data': listing_data
+    }
     
     if task == 'view' and id:
         template = get_object_or_404(Template, pk=id)
         template_form = TemplateForm(initial=template.__dict__)
-    else:
-        template_form = TemplateForm()
-    
-    listings = Listing.objects.all()
-    templates = Template.objects.all()
-    
-    listing_fields = [field.name for field in Listing._meta.get_fields()]
-    measurements_fields = [field.name for field in Measurement._meta.get_fields()]
-    logger.debug(f"Listing fields: {listing_fields+measurements_fields}")
+        context['template_form'] = template_form
+        
 
-    context = {
-        'template_form': template_form,
-        'listings': listings,
-        'templates': templates,
-        'model_fields': filter(lambda x: '_id' not in x, set(listing_fields+measurements_fields)),
-        'current_template_id' : id
-    }
-    
     
     return render(request, 'hub/pages/templates.html', context=context)
     
@@ -117,34 +142,45 @@ def items_router(request, task = None, id = None):
 
 def items_view(request, id):
     listing = get_object_or_404(Listing, pk=id)
+    
+    
+    measurement_id = listing.__dict__['measurements_id_id']
+    measurements = get_object_or_404(Measurement, pk=measurement_id)
+    
     listing_form = ListingForm(initial=listing.__dict__)
     measurements_form = MeasurementsForm(initial=listing.measurements_id.__dict__)
     photo_form = PhotoForm()
     
     photos = listing.photo_set.all()
-    
-    logger.debug(f"Photos: {photos}")
-    
-    initial_images = [photo.image for photo in photos]
+    templates = Template.objects.all()
     
   
+    listings = Listing.objects.all()
+  
+    listing_data = model_to_dict(listing)
+    measurements_data = model_to_dict(measurements)
+  
+    item_data = {**listing_data, **measurements_data}
+    item_data_json = json.dumps(item_data)
+  
     # If you want to pass the photo data (e.g., id, url) to the context for display purposes
-    listing_dict = {
+    photos = {
         "photos": [{
             "id": photo.photo_id,
             "url": request.build_absolute_uri(photo.image.url) if photo.image else None,
             # Add other photo fields as needed
-        } for photo in photos]
+        } for photo in photos],
     }
-
-    listing_dict = json.dumps(listing_dict["photos"])
 
     context = {
         'id': id,
         'listing_form': listing_form,
         'measurements_form': measurements_form,
         'photo_form': photo_form,
-        'listing_dict': listing_dict  # For displaying in the template
+        'templates': templates,
+        'listings': listings,
+        'item_data': item_data_json,
+        'photos_data': json.dumps(photos['photos'])
     }
 
     return render(request, 'hub/pages/upload.html', context=context)

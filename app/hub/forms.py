@@ -19,6 +19,7 @@ class TemplateForm(forms.ModelForm):
         fields = (
             "name",
             "description",
+            "template_id",
         )
 
     def __init__(self, *args, **kwargs):
@@ -126,14 +127,35 @@ class ListingForm(forms.ModelForm):
                     ),
                 ),
             ),
-            Fieldset(
+            Row(
+                Column(
+                    HTML('''
+                            <fieldset>
+                            <legend>Template preview</legend>
+
+                            <div id="preview" class="mb-3">
+                            <label for="preview-text" class="form-label">
+                                Description
+                            </label>
+                            <textarea type="text" id="preview-text" class="form-control" rows="22" disabled></textarea>
+                        </div>
+                        </fieldset>
+
+                         '''
+                         ),
+                    css_class="col-12"),
+                Column(
+                    Fieldset(
                 "Photos",
                 HTML("{% include 'hub/components/images_form.html' %}"),
                 Div(
-                    HTML("<button type='button' id='copyImagesButton' class='btn btn-primary'>Copy all images</button> {% if task == 'create' %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='create' %}`)' class='btn btn-primary'>Create</button> {% else %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='update' id=id %}`)' class='btn btn-primary'>Update</button> {% endif %}"), 
+                    HTML("<button type='button' id='copyImagesButton' class='btn btn-primary'>Copy all images</button> {% if task == 'create' %} <button type='submit' onclick='setFormAction(`{% url 'items_router' task='create' %}`)' class='btn btn-primary'>Create</button> {% else %} <a type='submit' onclick='setFormAction(`{% url 'items_router' task='update' id=id %}`)' class='btn btn-primary'>Update</a> {% endif %}"), 
                     css_class="mt-4"
                 ),
-            ),
+                ),css_class="col-12"),
+                
+                ),
+            
         )
 
 
